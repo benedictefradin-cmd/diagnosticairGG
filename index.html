@@ -22,6 +22,8 @@
    CHARTE VISUELLE — variables CSS (MODE SOMBRE par défaut)
    Aligné sur l'identité Green-Got : vert lime signature sur
    fonds noir/anthracite profond, typographie géométrique.
+   Parti pris : sobriété premium, beaucoup d'espace blanc,
+   aucun pictogramme décoratif (pas d'emojis).
    ============================================================ */
 :root {
   /* Signature */
@@ -43,16 +45,11 @@
   --line: rgba(255, 255, 255, 0.10);
   --line-strong: rgba(255, 255, 255, 0.18);
 
-  /* Niveaux de preuve (sourcing scientifique) */
-  --lvl-fact: #b7f651;      /* fait établi */
-  --lvl-assoc: #7fd0ff;     /* association observée */
-  --lvl-piste: #e9c46a;     /* piste de recherche */
-
   --radius-card: 24px;
   --radius-soft: 16px;
   --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.45);
   --shadow-hover: 0 16px 50px rgba(0, 0, 0, 0.55);
-  --maxw: 760px;
+  --maxw: 720px;
 }
 
 /* ============================================================
@@ -84,9 +81,9 @@ body::before {
   pointer-events: none;
 }
 
-h1, h2, h3 { line-height: 1.12; letter-spacing: -0.025em; margin: 0 0 0.45em; font-weight: 800; }
+h1, h2, h3 { line-height: 1.14; letter-spacing: -0.025em; margin: 0 0 0.45em; font-weight: 800; }
 h1 { font-size: clamp(2.1rem, 7vw, 3.4rem); font-weight: 900; }
-h2 { font-size: clamp(1.5rem, 4.5vw, 2.1rem); }
+h2 { font-size: clamp(1.4rem, 4.2vw, 1.9rem); }
 h3 { font-size: 1.18rem; font-weight: 700; }
 p { margin: 0 0 1em; }
 a { color: var(--lime); }
@@ -146,6 +143,9 @@ strong { color: var(--text); }
 .btn-ghost:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: var(--line-strong); }
 
 .btn-block { width: 100%; }
+
+/* Pictogrammes SVG sobres et monochromes (jamais d'emoji) */
+.ic-svg { width: 18px; height: 18px; flex-shrink: 0; stroke: currentColor; }
 
 /* ============================================================
    ÉCRANS (transition fondu)
@@ -222,15 +222,17 @@ strong { color: var(--text); }
 .disclaimer-box p { margin: 0; font-size: 0.98rem; color: var(--muted); }
 .disclaimer-box .dt { font-weight: 800; display: block; margin-bottom: 4px; color: var(--text); }
 
-.reassure { font-size: 0.92rem; color: var(--muted); margin-top: 16px; }
-
-/* Petits repères de confiance sous l'accroche */
+/* Petits repères de confiance sous l'accroche (sans pictogrammes) */
 .trust-row {
-  display: flex; flex-wrap: wrap; gap: 10px 18px;
+  display: flex; flex-wrap: wrap; gap: 8px 12px;
   justify-content: center; margin: 22px 0 4px;
-  font-size: 0.88rem; color: var(--muted);
+  font-size: 0.84rem; color: var(--muted);
 }
-.trust-row span { display: inline-flex; align-items: center; gap: 7px; }
+.trust-row span {
+  display: inline-flex; align-items: center;
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 6px 13px;
+}
 
 /* ============================================================
    ÉCRAN 2 — QUESTIONNAIRE
@@ -249,7 +251,7 @@ strong { color: var(--text); }
   border-radius: 999px;
   transition: width .45s cubic-bezier(.4,0,.2,1);
 }
-/* Encouragement entre sections (gamification douce) */
+/* Encouragement entre sections (gamification douce, sans emoji) */
 .q-encourage {
   text-align: center; font-size: 0.92rem; font-weight: 700;
   color: var(--lime); margin: 0 0 24px; min-height: 1.2em;
@@ -305,13 +307,9 @@ strong { color: var(--text); }
    ÉCRAN 4 — RAPPORT
    ============================================================ */
 .report-head { text-align: center; margin-bottom: 4px; }
-.celebrate {
-  text-align: center; font-weight: 800; color: var(--lime);
-  font-size: 1.05rem; margin: 0 auto 18px; max-width: 480px;
-}
 
-/* Jauge circulaire */
-.gauge-wrap { display: flex; flex-direction: column; align-items: center; margin: 8px 0 28px; }
+/* Jauge circulaire + synthèse */
+.gauge-wrap { display: flex; flex-direction: column; align-items: center; margin: 8px 0 16px; }
 .gauge { position: relative; width: 220px; height: 220px; }
 .gauge svg { transform: rotate(-90deg); width: 100%; height: 100%; }
 .gauge .track { fill: none; stroke: var(--surface-2); stroke-width: 18; }
@@ -323,45 +321,51 @@ strong { color: var(--text); }
 .gauge .score-num { font-size: 3.5rem; font-weight: 900; line-height: 1; }
 .gauge .score-max { font-size: 1rem; color: var(--muted); font-weight: 700; }
 .tier-label {
-  display: inline-block; font-weight: 800; font-size: 1.25rem; margin-top: 18px;
+  display: inline-block; font-weight: 800; font-size: 1.2rem; margin-top: 18px;
   padding: 6px 18px; border-radius: 999px; background: var(--lime-soft); color: var(--lime);
 }
-.tier-phrase { color: var(--muted); max-width: 480px; margin: 12px auto 0; }
+.synthesis { color: var(--text); font-size: 1.08rem; max-width: 540px; margin: 16px auto 0; text-align: center; }
 
-/* Sections & cartes du rapport */
-.section { margin-top: 38px; }
-.section > h2 { display: flex; align-items: center; gap: 10px; }
+/* Sections du rapport — hiérarchie par l'espace, pas par des séparateurs lourds */
+.section { margin-top: 44px; }
+.section-intro { color: var(--muted); margin: -6px 0 18px; font-size: 0.96rem; }
 
+/* Points forts : liste compacte, une ligne chacun */
+ul.strengths { list-style: none; margin: 0; padding: 0; }
+ul.strengths li {
+  position: relative; padding: 10px 0 10px 22px;
+  color: var(--text); font-size: 1rem;
+  border-top: 1px solid var(--line);
+}
+ul.strengths li:first-child { border-top: none; }
+ul.strengths li::before {
+  content: ""; position: absolute; left: 0; top: 17px;
+  width: 8px; height: 8px; border-radius: 2px; background: var(--lime);
+}
+
+/* Carte de recommandation (priorité) */
 .card {
   background: var(--surface-solid); border-radius: var(--radius-soft);
-  padding: 20px 22px; box-shadow: var(--shadow-soft);
-  margin-bottom: 14px; border: 1px solid var(--line);
+  padding: 22px 24px; box-shadow: var(--shadow-soft);
+  margin-bottom: 16px; border: 1px solid var(--line);
 }
-.card.positive { border-left: 4px solid var(--lime); }
-.card.priority { border-left: 4px solid var(--lime-dark); }
+.card.reco { border-left: 3px solid var(--lime); }
+.reco-title { font-size: 1.12rem; font-weight: 800; margin: 0 0 8px; }
+.reco-why { color: var(--muted); margin: 0 0 10px; }
+.reco-do { margin: 0; }
+.reco-do .lbl { font-weight: 800; color: var(--lime); }
 
-.card .fact { font-weight: 800; margin-bottom: 12px; font-size: 1.08rem; }
-.card .row { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
-.card .row:last-child { margin-bottom: 0; }
-.card .row .ic { flex-shrink: 0; font-size: 1.05rem; line-height: 1.5; }
-.card .row .lbl { font-weight: 800; }
-.card .row .lbl-why { color: var(--lime); }
-
-/* Puces de source cliquables (citations numérotées) */
-.cite-row { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-.cite-row .cite-lead { font-size: 0.8rem; color: var(--muted); font-weight: 700; }
-.cite {
-  font-size: 0.78rem; font-weight: 800; text-decoration: none;
-  background: var(--surface-2); color: var(--lime);
-  border: 1px solid var(--line); border-radius: 8px; padding: 2px 8px;
+/* Mini-résumé scientifique en clair (pas de renvois numérotés) */
+.sci-note {
+  margin: 14px 0 0; padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 0.86rem; color: var(--muted); line-height: 1.5;
 }
-.cite:hover { border-color: var(--lime); }
 
 /* ============================================================
-   ENCART PARTENAIRE — "Coup de pouce Premium"
-   Visuellement SECONDAIRE : plus petit, fond lime très léger,
-   bordure gauche fine. Arrive APRÈS le conseil, jamais en pub
-   frontale. Contraste AA conservé.
+   ENCART PARTENAIRE — "Pour passer à l'action"
+   Placé JUSTE SOUS la recommandation qu'il soutient. Visuellement
+   secondaire : plus petit, fond lime très léger, bordure gauche fine.
    ============================================================ */
 .partner-tip {
   margin-top: 14px;
@@ -373,63 +377,31 @@ strong { color: var(--text); }
   font-size: 0.9rem;
 }
 .partner-tip .pt-label {
-  display: inline-flex; align-items: center; gap: 6px;
+  display: block;
   font-size: 0.68rem; font-weight: 800; text-transform: uppercase;
   letter-spacing: .07em; color: var(--lime); margin-bottom: 6px;
 }
 .partner-tip .pt-body { margin: 0; color: var(--muted); line-height: 1.5; }
 .partner-tip .pt-body strong { color: var(--text); }
-.partner-tip .pt-adv { color: var(--lime); font-weight: 800; white-space: nowrap; }
+.partner-tip .pt-adv { color: var(--lime); font-weight: 800; }
 .partner-tip a.pt-link { font-weight: 700; white-space: nowrap; }
 .partner-tip .pt-note {
   display: block; margin-top: 7px;
   font-size: 0.74rem; line-height: 1.4; color: var(--muted);
 }
 
-/* Bloc-pont "cercle vertueux" (offre Premium + lien vers la Fondation) */
-.premium-bridge {
-  background: var(--surface-solid);
-  border: 1px solid var(--line);
-  border-left: 4px solid var(--lime);
-  border-radius: var(--radius-card);
-  padding: 26px 24px;
-}
-.premium-bridge .kicker {
-  color: var(--lime); font-weight: 800; text-transform: uppercase;
-  letter-spacing: .08em; font-size: 0.8rem;
-}
-.premium-bridge h2 { margin: 8px 0 10px; }
-.premium-bridge .bridge { color: var(--muted); max-width: 600px; }
-.premium-bridge .cta-duo { margin-top: 18px; justify-content: flex-start; }
-
 /* Encart personne sensible */
 .sensitive-box {
   background: var(--forest); color: var(--text);
   border-radius: var(--radius-soft); padding: 22px 24px; margin-top: 24px;
-  display: flex; gap: 16px; align-items: flex-start; border: 1px solid rgba(183,246,81,0.2);
+  border: 1px solid rgba(183,246,81,0.2);
 }
-.sensitive-box .ic { font-size: 1.8rem; }
 .sensitive-box h3 { color: var(--lime); margin-bottom: 6px; }
 .sensitive-box p { margin: 0; color: #e8efe4; }
+.sensitive-box .partner-tip { margin-top: 16px; }
 
-/* Réflexe n°1 — mis en avant */
-.hero-tip {
-  background: linear-gradient(135deg, #15170f, #0c1409);
-  color: var(--text); border: 1px solid rgba(183,246,81,0.25);
-  border-radius: var(--radius-card); padding: 32px 28px; margin-top: 38px;
-  text-align: center; position: relative; overflow: hidden;
-}
-.hero-tip::after {
-  content: ""; position: absolute; width: 280px; height: 280px;
-  background: radial-gradient(circle, rgba(183,246,81,0.22), transparent 70%);
-  top: -90px; right: -90px; border-radius: 50%;
-}
-.hero-tip .kicker { color: var(--lime); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; font-size: 0.82rem; }
-.hero-tip h2 { color: var(--text); margin: 8px 0; position: relative; }
-.hero-tip p { color: var(--muted); margin: 0; position: relative; }
-
-/* Blocs dépliables (accordéons natifs <details>) */
-.accordion { margin-top: 14px; }
+/* Blocs dépliables (accordéons natifs <details>) — "Pour aller plus loin" */
+.accordion { margin-top: 6px; }
 details.acc {
   background: var(--surface-solid); border: 1px solid var(--line);
   border-radius: var(--radius-soft); margin-bottom: 12px; overflow: hidden;
@@ -437,7 +409,7 @@ details.acc {
 details.acc[open] { border-color: var(--line-strong); }
 details.acc > summary {
   cursor: pointer; list-style: none; padding: 18px 20px;
-  font-weight: 800; font-size: 1.05rem; display: flex;
+  font-weight: 800; font-size: 1.02rem; display: flex;
   align-items: center; justify-content: space-between; gap: 12px;
 }
 details.acc > summary::-webkit-details-marker { display: none; }
@@ -446,50 +418,13 @@ details.acc[open] > summary::after { content: "−"; }
 details.acc > summary:focus-visible { outline: 3px solid var(--lime); outline-offset: -3px; }
 .acc-body { padding: 0 20px 20px; color: var(--muted); }
 .acc-body p { margin: 0 0 0.85em; }
-.acc-body ul { margin: 0 0 0.85em; padding-left: 1.2em; }
+.acc-body ul, .acc-body ol { margin: 0 0 0.85em; padding-left: 0; }
 .acc-body li { margin-bottom: 6px; }
 .acc-body strong { color: var(--text); }
 .acc-body a { font-weight: 700; }
 
-/* Chips niveaux de preuve */
-.level {
-  display: inline-block; font-size: 0.7rem; font-weight: 800;
-  text-transform: uppercase; letter-spacing: .04em;
-  padding: 3px 9px; border-radius: 999px; margin-right: 6px;
-  border: 1px solid currentColor;
-}
-.level.fact  { color: var(--lvl-fact); }
-.level.assoc { color: var(--lvl-assoc); }
-.level.piste { color: var(--lvl-piste); }
-
-/* Liste de références numérotées */
-.refs { list-style: none; counter-reset: ref; padding: 0; margin: 0; }
-.refs li {
-  counter-increment: ref; position: relative;
-  padding: 12px 0 12px 38px; border-top: 1px solid var(--line);
-  font-size: 0.92rem;
-}
-.refs li:first-child { border-top: none; }
-.refs li::before {
-  content: counter(ref); position: absolute; left: 0; top: 12px;
-  width: 26px; height: 26px; border-radius: 8px;
-  background: var(--surface-2); color: var(--lime);
-  font-weight: 800; font-size: 0.82rem; display: grid; place-items: center;
-}
-.refs .inst { font-weight: 800; color: var(--text); }
-.refs .claim { color: var(--muted); }
-.refs li:target { background: var(--lime-soft); border-radius: 8px; }
-
-/* Section PFAS — accent visuel dédié */
-.pfas-intro {
-  background: linear-gradient(135deg, #161616, #101410);
-  border: 1px solid var(--line); border-left: 4px solid var(--lvl-piste);
-  border-radius: var(--radius-soft); padding: 20px 22px; margin-bottom: 16px;
-}
-.pfas-intro .tagline { color: var(--lvl-piste); font-weight: 800; text-transform: uppercase; letter-spacing: .06em; font-size: 0.78rem; }
-
 /* Liste de gestes (recommandations PFAS) */
-.steps { counter-reset: step; list-style: none; padding: 0; margin: 0; }
+.steps { counter-reset: step; list-style: none; padding: 0; margin: 0 0 0.85em; }
 .steps li {
   counter-increment: step; position: relative;
   padding: 10px 0 10px 40px; border-top: 1px solid var(--line);
@@ -502,10 +437,37 @@ details.acc > summary:focus-visible { outline: 3px solid var(--lime); outline-of
   display: grid; place-items: center; font-size: 0.85rem;
 }
 
+/* Liste de références (Sources) */
+.refs { list-style: none; counter-reset: ref; padding: 0; margin: 0; }
+.refs li {
+  counter-increment: ref; position: relative;
+  padding: 12px 0 12px 38px; border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+}
+.refs li:first-child { border-top: none; }
+.refs li::before {
+  content: counter(ref); position: absolute; left: 0; top: 12px;
+  width: 26px; height: 26px; border-radius: 8px;
+  background: var(--surface-2); color: var(--lime);
+  font-weight: 800; font-size: 0.82rem; display: grid; place-items: center;
+}
+.refs .inst { font-weight: 800; color: var(--text); }
+.refs .claim { color: var(--muted); }
+
+/* Cartes projets financés */
+.projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 6px; }
+.proj {
+  background: var(--bg-2); border: 1px solid var(--line);
+  border-radius: var(--radius-soft); padding: 14px 16px;
+}
+.proj h3 { font-size: 1rem; margin-bottom: 4px; }
+.proj p { font-size: 0.88rem; color: var(--muted); margin: 0; }
+.proj .impact { display: block; margin-top: 8px; color: var(--lime); font-weight: 700; font-size: 0.85rem; }
+
 /* Zone de partage */
 .share-box {
   background: var(--surface-solid); border-radius: var(--radius-card);
-  padding: 28px 24px; margin-top: 38px; text-align: center;
+  padding: 28px 24px; text-align: center;
   box-shadow: var(--shadow-soft); border: 1px solid var(--line);
 }
 .share-box h2 { margin-bottom: 6px; }
@@ -513,41 +475,23 @@ details.acc > summary:focus-visible { outline: 3px solid var(--lime); outline-of
 .share-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
 .copy-toast { margin-top: 14px; font-weight: 800; color: var(--lime); height: 1.2em; }
 
-/* Section Fondation — "Comment on agit, ensemble" */
-.impact-cta {
+/* Bloc de clôture unique — cercle vertueux vers la Fondation / Green-Got */
+.closing {
   background: linear-gradient(135deg, var(--forest), #0c1409);
   color: var(--text); border-radius: var(--radius-card);
-  padding: 30px 26px; margin-top: 20px; border: 1px solid rgba(183,246,81,0.22);
+  padding: 32px 28px; border: 1px solid rgba(183,246,81,0.22);
 }
-.impact-cta h2 { color: var(--text); }
-.impact-cta .bridge { color: var(--muted); max-width: 560px; }
+.closing .kicker { color: var(--lime); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; font-size: 0.8rem; }
+.closing h2 { color: var(--text); margin: 8px 0 12px; }
+.closing p { color: var(--muted); max-width: 600px; }
+.closing .b-corp { font-size: 0.92rem; }
 
-.model-points { display: grid; gap: 12px; margin: 18px 0 4px; }
-.model-points .mp {
-  display: flex; gap: 12px; align-items: flex-start;
-  background: rgba(0,0,0,0.25); border: 1px solid var(--line);
-  border-radius: var(--radius-soft); padding: 14px 16px;
-}
-.model-points .mp .ic { color: var(--lime); font-size: 1.2rem; flex-shrink: 0; }
-.model-points .mp p { margin: 0; font-size: 0.95rem; color: var(--muted); }
-.model-points .mp strong { color: var(--text); }
-
-/* Cartes projets financés */
-.projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 14px; }
-.proj {
-  background: var(--surface-solid); border: 1px solid var(--line);
-  border-radius: var(--radius-soft); padding: 16px 18px;
-}
-.proj h3 { font-size: 1rem; margin-bottom: 4px; }
-.proj p { font-size: 0.88rem; color: var(--muted); margin: 0; }
-.proj .impact { display: block; margin-top: 8px; color: var(--lime); font-weight: 700; font-size: 0.85rem; }
-
-.kpi-row { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: center; margin: 20px 0; }
+.kpi-row { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: center; margin: 22px 0; }
 .kpi { text-align: center; }
 .kpi .n { font-size: 1.6rem; font-weight: 900; color: var(--lime); line-height: 1; }
 .kpi .l { font-size: 0.82rem; color: var(--muted); }
 
-.cta-duo { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 22px; }
+.cta-duo { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-start; margin-top: 22px; }
 
 .restart-wrap { text-align: center; margin-top: 40px; }
 
@@ -667,9 +611,9 @@ footer .brand-line { font-weight: 800; color: var(--text); margin-top: 12px; }
     <button class="btn btn-primary" id="btn-start">Faire le test (2 min) →</button>
 
     <div class="trust-row">
-      <span>🔒 100 % anonyme</span>
-      <span>🚫 aucune donnée enregistrée</span>
-      <span>📊 sources scientifiques citées</span>
+      <span>100 % anonyme</span>
+      <span>Aucune donnée enregistrée</span>
+      <span>Sources scientifiques citées</span>
     </div>
   </div>
 </section>
@@ -706,19 +650,18 @@ footer .brand-line { font-weight: 800; color: var(--text); margin-top: 12px; }
 <section id="screen-calc" class="screen" aria-label="Analyse en cours">
   <div class="spinner" aria-hidden="true"></div>
   <p class="calc-text">Analyse de vos réponses…</p>
-  <p class="calc-sub">On prépare votre rapport personnalisé 🌿</p>
+  <p class="calc-sub">On prépare votre rapport personnalisé.</p>
 </section>
 
 <!-- ====================================================== -->
 <!-- ÉCRAN 4 — RAPPORT                                       -->
 <!-- ====================================================== -->
 <section id="screen-report" class="screen" aria-labelledby="report-title">
+
+  <!-- 1) Score + phrase de synthèse personnalisée -->
   <div class="report-head">
     <h2 id="report-title">Votre rapport air intérieur</h2>
   </div>
-  <p class="celebrate">🌿 Bravo, vous venez de faire le premier pas. Votre score est un point de départ, pas un jugement.</p>
-
-  <!-- Jauge -->
   <div class="gauge-wrap">
     <div class="gauge">
       <svg viewBox="0 0 200 200" aria-hidden="true">
@@ -731,227 +674,151 @@ footer .brand-line { font-weight: 800; color: var(--text); margin-top: 12px; }
       </div>
     </div>
     <span class="tier-label" id="tier-label">—</span>
-    <p class="tier-phrase" id="tier-phrase"></p>
+    <p class="synthesis" id="synthesis"></p>
   </div>
 
-  <!-- Points forts -->
+  <!-- 2) Points forts (version compacte, une ligne chacun) -->
   <div class="section" id="sec-strengths">
-    <h2>💪 Vos points forts</h2>
-    <div id="strengths-list"></div>
+    <h2>Vos points forts</h2>
+    <ul class="strengths" id="strengths-list"></ul>
   </div>
 
   <!-- Encart personne sensible (injecté si activé) -->
   <div id="sensitive-slot"></div>
 
-  <!-- Priorités -->
+  <!-- 3) Priorités = les recommandations (cœur du rapport) -->
   <div class="section" id="sec-priorities">
-    <h2>🎯 Vos priorités</h2>
+    <h2 id="prio-title">Vos priorités</h2>
+    <p class="section-intro" id="prio-intro">Les actions qui auront le plus d'effet chez vous, dans l'ordre.</p>
     <div id="priorities-list"></div>
   </div>
 
-  <!-- Réflexe n°1 -->
-  <div class="hero-tip">
-    <span class="kicker">Le réflexe n°1</span>
-    <h2>Aérez 2 × 10 min par jour</h2>
-    <p>Même l'hiver. Ouvrir grand 10 minutes matin et soir renouvelle l'air sans refroidir les murs. C'est gratuit, c'est rapide, et c'est le geste le plus efficace de tous.</p>
-  </div>
-
-  <!-- ============== SECTION PFAS (AXE 4) ============== -->
-  <div class="section" id="sec-pfas">
-    <h2>♾️ PFAS : les « polluants éternels »</h2>
-    <div class="pfas-intro">
-      <span class="tagline">Sujet phare de la Fondation Green-Got</span>
-      <p style="margin:.5em 0 0;color:var(--muted);">
-        Les <strong>PFAS</strong> (substances per- et polyfluoroalkylées) sont surnommés « polluants
-        éternels » car ils ne se dégradent quasiment pas et s'accumulent dans l'eau, les sols, l'air…
-        puis dans le corps. Toute la population y est exposée à des degrés divers. Lien avec votre air
-        intérieur : ils se logent aussi dans la <strong>poussière domestique</strong> et migrent depuis
-        certains textiles et produits. Pas de panique — des gestes simples réduisent votre exposition.
-      </p>
-    </div>
-
+  <!-- Pour aller plus loin : contenus de fond repliés, discrets -->
+  <div class="section" id="sec-more">
+    <h2>Pour aller plus loin</h2>
     <div class="accordion">
+
       <details class="acc">
-        <summary>Où les trouve-t-on, et par où passe l'exposition ?</summary>
+        <summary>Comprendre les PFAS, les « polluants éternels »</summary>
         <div class="acc-body">
-          <p><strong>Où :</strong> poêles antiadhésives, emballages alimentaires (papier anti-gras, boîtes fast-food),
-          vêtements imperméables, cosmétiques longue tenue, mousses anti-incendie, certains revêtements industriels,
-          et l'eau du robinet dans certaines zones.</p>
-          <p><strong>Voies d'exposition :</strong> alimentation (viande, produits de la mer, emballages, ustensiles dégradés),
-          eau du robinet, et poussières / air intérieur.</p>
+          <p>Les <strong>PFAS</strong> (substances per- et polyfluoroalkylées) sont surnommés « polluants
+          éternels » car ils ne se dégradent quasiment pas et s'accumulent dans l'eau, les sols, l'air…
+          puis dans le corps. Toute la population y est exposée à des degrés divers. Lien avec votre air
+          intérieur : ils se logent aussi dans la <strong>poussière domestique</strong> et migrent depuis
+          certains textiles et produits.</p>
+          <p><strong>Où les trouve-t-on :</strong> poêles antiadhésives, emballages alimentaires anti-gras,
+          vêtements imperméables, cosmétiques longue tenue, certains revêtements industriels, et l'eau du robinet
+          dans certaines zones. <strong>Voies d'exposition :</strong> alimentation, eau, poussières et air intérieur.</p>
+          <p>Les travaux scientifiques portent sur des effets sur le cholestérol, la fonction hépatique, la
+          réponse immunitaire, la grossesse et le développement, et des classements de cancérogénicité pour
+          <em>certains</em> PFAS. Tous les PFAS ne se valent pas et les niveaux de preuve diffèrent : il s'agit
+          d'associations à ne pas surinterpréter. Plus vulnérables : femmes enceintes ou allaitantes, nourrissons,
+          travailleurs exposés et habitants de zones contaminées.</p>
         </div>
       </details>
 
       <details class="acc">
-        <summary>Quels effets sur la santé sont étudiés ?</summary>
+        <summary>PFAS : réduire son exposition au quotidien</summary>
         <div class="acc-body">
-          <p>Les travaux scientifiques portent sur des effets sur le <strong>cholestérol</strong>, la
-          <strong>fonction hépatique</strong>, la <strong>réponse immunitaire</strong> (réponse aux vaccins),
-          certains effets sur la <strong>grossesse et le développement</strong>, et des classements de
-          cancérogénicité pour <em>certains</em> PFAS.</p>
-          <p><span class="level assoc">Selon le niveau de preuve</span> Tous les PFAS ne se valent pas et les
-          niveaux de preuve diffèrent : on ne surinterprète pas. Il n'existe pas de solution miracle pour
-          éliminer les PFAS du corps — mais réduire l'exposition reste utile.</p>
-          <p><strong>Plus vulnérables :</strong> femmes enceintes ou allaitantes, nourrissons, travailleurs exposés,
-          habitants de zones contaminées.</p>
-
-          <div class="partner-tip">
-            <span class="pt-label"><span aria-hidden="true">👶</span> Coup de pouce Premium</span>
-            <p class="pt-body">
-              Les PFAS et substances controversées se logent aussi dans certains cosmétiques longue tenue et produits bébé.
-              Pour les plus sensibles, <strong>Joone</strong> propose couches françaises et soins bio ; avec la carte Premium Green-Got,
-              <span class="pt-adv">11 % de vos commandes</span> sont reversés sur votre compte.
-              <a class="pt-link" href="https://green-got.com/" target="_blank" rel="noopener">En savoir plus ↗</a>
-              <span class="pt-note">Offre Premium 2025, susceptible d'évoluer. Cashback limité à 1 transaction remboursée par mois et par membre, pendant les 12 mois suivant le 1ᵉʳ achat.</span>
-            </p>
-          </div>
-          <p>Références institutionnelles : <a href="#ref-9" >ministère de la Santé [9]</a>,
-          Anses (valeurs guides sanitaires) et INERIS (expertise).</p>
-        </div>
-      </details>
-
-      <details class="acc">
-        <summary>Ce que vous pouvez faire dès aujourd'hui</summary>
-        <div class="acc-body">
-          <p style="color:var(--muted)">Recommandations reprises des conseils officiels du ministère de la Santé
-          <a href="#ref-8">[8]</a> <a href="#ref-9">[9]</a> :</p>
+          <p>Recommandations reprises des conseils officiels du ministère de la Santé :</p>
           <ol class="steps">
             <li><strong>Diversifiez votre alimentation</strong> pour éviter une exposition répétée via les mêmes sources.</li>
             <li><strong>Privilégiez les produits non transformés</strong> (fruits et légumes de saison, bio si possible), bien lavés et épluchés ; favorisez la cuisine maison.</li>
             <li><strong>Remplacez les ustensiles antiadhésifs rayés ou abîmés</strong> ; préférez l'inox, la fonte, le verre ou la céramique sans PFAS.</li>
             <li><strong>Limitez les emballages jetables et contenants traités</strong> ; ne chauffez jamais les aliments dans ces emballages.</li>
             <li><strong>Aérez et dépoussiérez régulièrement</strong> — les PFAS se logent dans la poussière domestique. C'est le lien direct avec votre air intérieur.</li>
-            <li><strong>Renseignez-vous sur l'eau locale</strong> : la France publie une cartographie nationale. La limite de qualité est fixée à <strong>0,1 µg/L pour la somme de 20 PFAS</strong> ; le contrôle sanitaire est obligatoire dans l'eau potable depuis le 1ᵉʳ janvier 2026 — la France l'applique par anticipation depuis 2023, avant l'échéance européenne du 12 janvier 2026 (directive UE 2020/2184) <a href="#ref-10">[10]</a>.</li>
+            <li><strong>Renseignez-vous sur l'eau locale</strong> : la France publie une cartographie nationale. La limite de qualité est fixée à <strong>0,1 µg/L pour la somme de 20 PFAS</strong> ; le contrôle sanitaire est obligatoire dans l'eau potable depuis le 1ᵉʳ janvier 2026 — la France l'applique par anticipation depuis 2023 (directive UE 2020/2184).</li>
           </ol>
+        </div>
+      </details>
 
-          <div class="partner-tip">
-            <span class="pt-label"><span aria-hidden="true">🛒</span> Coup de pouce Premium</span>
-            <p class="pt-body">
-              Manger bio, de saison et moins transformé, c'est aussi réduire son exposition aux pesticides et aux PFAS.
-              Avec la carte Premium Green-Got, <strong>Biocoop</strong> vous reverse <span class="pt-adv">4 % de vos achats</span> sur votre compte,
-              sans points ni conditions cachées. Pas de magasin près de chez vous ? <strong>La Fourche</strong> (bio en ligne) offre
-              <span class="pt-adv">−50 % sur l'adhésion pendant 2 ans</span>.
-              <a class="pt-link" href="https://green-got.com/" target="_blank" rel="noopener">Voir l'offre ↗</a>
-              <span class="pt-note">Offres Premium en vigueur 2025, susceptibles d'évoluer. À activer dans l'app Green-Got, rubrique « Avantages ».</span>
-            </p>
+      <details class="acc">
+        <summary>PFAS : ce que dit la réglementation</summary>
+        <div class="acc-body">
+          <ul>
+            <li><strong>Plan d'action interministériel PFAS</strong> (4 avril 2024) : 5 axes, 26 actions. <a href="https://www.ecologie.gouv.fr/politiques-publiques/plan-daction-interministeriel-pfas" target="_blank" rel="noopener">ecologie.gouv.fr</a></li>
+            <li><strong>Loi n° 2025-188 du 27 février 2025</strong> (« loi Thierry ») : interdiction, à compter du 1ᵉʳ janvier 2026, des PFAS dans les cosmétiques, les farts de ski et les textiles d'habillement, chaussures et imperméabilisants destinés aux consommateurs (extension à tous les textiles en 2030). <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000051260902" target="_blank" rel="noopener">Légifrance</a></li>
+            <li><strong>Décret n° 2025-958 du 8 septembre 2025</strong> : trajectoire de réduction de 70 % des rejets industriels aqueux de PFAS d'ici 2028 (référence : émissions de 2023), pour tendre vers zéro en 2030. <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052212900" target="_blank" rel="noopener">Légifrance</a></li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>Sources scientifiques</summary>
+        <div class="acc-body">
+          <p>Nous distinguons toujours <strong>faits établis</strong>, <strong>associations observées</strong> et
+          <strong>pistes de recherche</strong>, et nous ne transformons jamais une corrélation en preuve de cause à effet.</p>
+          <ol class="refs">
+            <li><span class="inst">OMS</span> — <span class="claim">Qualité de l'air ambiant (extérieur) et santé.</span><br><a href="https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health" target="_blank" rel="noopener">who.int</a></li>
+            <li><span class="inst">OMS</span> — <span class="claim">Pollution de l'air domestique et santé.</span><br><a href="https://www.who.int/news-room/fact-sheets/detail/household-air-pollution-and-health" target="_blank" rel="noopener">who.int</a></li>
+            <li><span class="inst">ADEME / Santé publique France</span> — <span class="claim">Nous passons 80 à 90 % de notre temps dans des espaces clos ; l'air intérieur est souvent plus pollué que l'air extérieur.</span><br><a href="https://www.santepubliquefrance.fr/air-et-environnements-interieurs/donnees" target="_blank" rel="noopener">santepubliquefrance.fr</a> · <a href="https://librairie.ademe.fr/3385-qualite-air-interieur" target="_blank" rel="noopener">ademe.fr</a></li>
+            <li><span class="inst">American Journal of Public Health (AJPH), 2024</span> — <span class="claim">« Recommitting to Ventilation Standards for Healthy Indoor Air Quality ».</span><br><a href="https://ajph.aphapublications.org/doi/10.2105/AJPH.2024.307809" target="_blank" rel="noopener">ajph.aphapublications.org</a></li>
+            <li><span class="inst">Harvard T.H. Chan — Healthy Buildings</span> — <span class="claim">Impacts de la qualité de l'air intérieur sur la fonction cognitive.</span><br><a href="https://healthybuildings.hsph.harvard.edu/impacts-of-indoor-air-quality-on-cognitive-function/" target="_blank" rel="noopener">healthybuildings.hsph.harvard.edu</a></li>
+            <li><span class="inst">Union européenne</span> — <span class="claim">Directive (UE) 2024/2881 du 23 octobre 2024 sur la qualité de l'air ambiant.</span></li>
+            <li><span class="inst">IRSN / ARS (France)</span> — <span class="claim">Radon : information et cartographie du risque par commune.</span></li>
+            <li><span class="inst">info.gouv.fr</span> — <span class="claim">PFAS : tout savoir et comment réduire son exposition.</span><br><a href="https://www.info.gouv.fr/actualite/pfas-tout-savoir-sur-les-polluants-eternels-et-comment-reduire-son-exposition" target="_blank" rel="noopener">info.gouv.fr</a></li>
+            <li><span class="inst">sante.gouv.fr</span> — <span class="claim">Polluants éternels (PFAS) : s'informer et réduire son exposition.</span><br><a href="https://sante.gouv.fr/sante-et-environnement/substances-chimiques/les-pfas/article/polluants-eternels-pfas-s-informer-et-reduire-son-exposition" target="_blank" rel="noopener">sante.gouv.fr</a></li>
+            <li><span class="inst">sante.gouv.fr</span> — <span class="claim">PFAS et eau destinée à la consommation humaine.</span><br><a href="https://sante.gouv.fr/sante-et-environnement/eaux/les-pfas/article/les-pfas-et-l-eau-destinee-a-la-consommation-humaine" target="_blank" rel="noopener">sante.gouv.fr</a></li>
+            <li><span class="inst">Anses &amp; INERIS</span> — <span class="claim">Valeurs guides sanitaires, travaux en cours et rapports d'expertise.</span></li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="acc">
+        <summary>Les projets soutenus par la Fondation</summary>
+        <div class="acc-body">
+          <div class="projects">
+            <div class="proj"><h3>Wings of the Ocean</h3><p>Dépollution des mers et littoraux (plastique), éducation des populations.<span class="impact">135+ tonnes de déchets récupérés</span></p></div>
+            <div class="proj"><h3>FEVE</h3><p>Achat de terres mises à disposition de nouveaux agriculteurs en agroécologie (moins de pesticides).<span class="impact">Renouvellement des générations</span></p></div>
+            <div class="proj"><h3>Cœur de Forêt</h3><p>Préservation des forêts en France et à l'international, action sur les causes de la déforestation.</p></div>
+            <div class="proj"><h3>Centre Athénas</h3><p>Protection et soin de la faune sauvage.</p></div>
+            <div class="proj"><h3>Refuge GroinGroin</h3><p>Refuge pour animaux de ferme rescapés.</p></div>
+            <div class="proj"><h3>Impact mesurable</h3><p>Chaque euro compte :<span class="impact">~40 g de plastique ramassés · ~15,86 m² reverdis · 1 palétuvier replanté</span></p></div>
           </div>
         </div>
       </details>
 
-      <details class="acc">
-        <summary>Les choses bougent : le cadre réglementaire</summary>
-        <div class="acc-body">
-          <ul>
-            <li><span class="level fact">Fait</span> <strong>Plan d'action interministériel PFAS</strong> (4 avril 2024) : 5 axes, 26 actions. <a href="https://www.ecologie.gouv.fr/politiques-publiques/plan-daction-interministeriel-pfas" target="_blank" rel="noopener">ecologie.gouv.fr ↗</a></li>
-            <li><span class="level fact">Fait</span> <strong>Loi n° 2025-188 du 27 février 2025</strong> (« loi Thierry », portée par le député Nicolas Thierry) : interdiction, à compter du 1ᵉʳ janvier 2026, des PFAS dans les cosmétiques, les farts de ski et les textiles d'habillement, chaussures et imperméabilisants destinés aux consommateurs (extension à tous les textiles en 2030). <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000051260902" target="_blank" rel="noopener">Légifrance ↗</a></li>
-            <li><span class="level fact">Fait</span> <strong>Décret n° 2025-958 du 8 septembre 2025</strong> : trajectoire de réduction de 70 % des rejets industriels aqueux de PFAS d'ici 2028 (référence : émissions de 2023), pour tendre vers zéro en 2030. <a href="https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000052212900" target="_blank" rel="noopener">Légifrance ↗</a></li>
-          </ul>
-          <p>Sources officielles : <a href="#ref-8">info.gouv.fr [8]</a>, <a href="#ref-9">sante.gouv.fr [9]</a>, <a href="#ref-10">sante.gouv.fr – eau [10]</a>.</p>
-        </div>
-      </details>
     </div>
   </div>
 
-  <!-- ============== CE QUE DIT LA SCIENCE (AXE 3) ============== -->
-  <div class="section" id="sec-science">
-    <h2>🔬 Ce que dit la science</h2>
-    <p style="color:var(--muted);margin-top:-6px;">
-      Nous distinguons toujours trois niveaux :
-      <span class="level fact">Fait établi</span>
-      <span class="level assoc">Association observée</span>
-      <span class="level piste">Piste de recherche</span>
-      — et nous ne transformons jamais une corrélation en preuve de cause à effet.
-    </p>
-
-    <div class="accordion">
-      <details class="acc">
-        <summary>Les repères clés, sourcés</summary>
-        <div class="acc-body">
-          <p><span class="level fact">Fait</span> L'air pur est un enjeu de santé fondamental. L'OMS a publié en 2021 des lignes directrices mondiales sur la qualité de l'air (PM2.5, PM10, NO₂, O₃, SO₂, CO). <a href="#ref-1">[1]</a> <a href="#ref-2">[2]</a></p>
-          <p><span class="level fact">Fait</span> Nous passons environ <strong>90 % de notre temps en intérieur</strong>, où l'air peut être plus pollué qu'à l'extérieur. <a href="#ref-3">[3]</a></p>
-          <p><span class="level assoc">Association</span> Des taux de ventilation plus élevés sont associés à moins d'infections respiratoires, moins d'absentéisme et de meilleures performances cognitives (AJPH, 2024). <a href="#ref-4">[4]</a></p>
-          <p><span class="level assoc">Association</span> PM2.5 et CO₂ affectent les fonctions cognitives à court terme, y compris chez de jeunes adultes (étude Harvard Healthy Buildings, 302 employés, 6 pays). <a href="#ref-5">[5]</a></p>
-          <p><span class="level fact">Fait</span> La réglementation européenne se renforce : Directive (UE) 2024/2881 du 23 octobre 2024 sur la qualité de l'air ambiant. <a href="#ref-6">[6]</a></p>
-          <p><span class="level piste">Piste</span> La recherche explore aussi le lien entre aération et bien-être cognitif : une vaste étude chez des personnes âgées a observé une association entre aération hivernale plus fréquente et risque réduit de déclin cognitif. C'est une association, pas une preuve de cause à effet — mais une raison de plus d'ouvrir ses fenêtres.</p>
-        </div>
-      </details>
-
-      <details class="acc">
-        <summary>Références (institutions & liens)</summary>
-        <div class="acc-body">
-          <ol class="refs">
-            <li id="ref-1"><span class="inst">OMS</span> — <span class="claim">Qualité de l'air ambiant (extérieur) et santé.</span><br><a href="https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health" target="_blank" rel="noopener">who.int ↗</a></li>
-            <li id="ref-2"><span class="inst">OMS</span> — <span class="claim">Pollution de l'air domestique et santé.</span><br><a href="https://www.who.int/news-room/fact-sheets/detail/household-air-pollution-and-health" target="_blank" rel="noopener">who.int ↗</a></li>
-            <li id="ref-3"><span class="inst">ADEME / Santé publique France</span> — <span class="claim">Nous passons 80 à 90 % de notre temps dans des espaces clos ; l'air intérieur est souvent plus pollué que l'air extérieur.</span><br><a href="https://www.santepubliquefrance.fr/air-et-environnements-interieurs/donnees" target="_blank" rel="noopener">santepubliquefrance.fr ↗</a> · <a href="https://librairie.ademe.fr/3385-qualite-air-interieur" target="_blank" rel="noopener">ademe.fr ↗</a></li>
-            <li id="ref-4"><span class="inst">American Journal of Public Health (AJPH), 2024</span> — <span class="claim">« Recommitting to Ventilation Standards for Healthy Indoor Air Quality ».</span><br><a href="https://ajph.aphapublications.org/doi/10.2105/AJPH.2024.307809" target="_blank" rel="noopener">ajph.aphapublications.org ↗</a></li>
-            <li id="ref-5"><span class="inst">Harvard T.H. Chan — Healthy Buildings</span> — <span class="claim">Impacts de la qualité de l'air intérieur sur la fonction cognitive.</span><br><a href="https://healthybuildings.hsph.harvard.edu/impacts-of-indoor-air-quality-on-cognitive-function/" target="_blank" rel="noopener">healthybuildings.hsph.harvard.edu ↗</a></li>
-            <li id="ref-6"><span class="inst">Union européenne</span> — <span class="claim">Directive (UE) 2024/2881 du 23 octobre 2024 sur la qualité de l'air ambiant.</span></li>
-            <li id="ref-7"><span class="inst">IRSN / ARS (France)</span> — <span class="claim">Radon : information et cartographie du risque par commune.</span> <em>(Ressources publiques régionales.)</em></li>
-            <li id="ref-8"><span class="inst">info.gouv.fr</span> — <span class="claim">PFAS : tout savoir et comment réduire son exposition.</span><br><a href="https://www.info.gouv.fr/actualite/pfas-tout-savoir-sur-les-polluants-eternels-et-comment-reduire-son-exposition" target="_blank" rel="noopener">info.gouv.fr ↗</a></li>
-            <li id="ref-9"><span class="inst">sante.gouv.fr</span> — <span class="claim">Polluants éternels (PFAS) : s'informer et réduire son exposition.</span><br><a href="https://sante.gouv.fr/sante-et-environnement/substances-chimiques/les-pfas/article/polluants-eternels-pfas-s-informer-et-reduire-son-exposition" target="_blank" rel="noopener">sante.gouv.fr ↗</a></li>
-            <li id="ref-10"><span class="inst">sante.gouv.fr</span> — <span class="claim">PFAS et eau destinée à la consommation humaine.</span><br><a href="https://sante.gouv.fr/sante-et-environnement/eaux/les-pfas/article/les-pfas-et-l-eau-destinee-a-la-consommation-humaine" target="_blank" rel="noopener">sante.gouv.fr ↗</a></li>
-            <li id="ref-11"><span class="inst">Anses & INERIS</span> — <span class="claim">Valeurs guides sanitaires, travaux en cours et rapports d'expertise.</span></li>
-          </ol>
-        </div>
-      </details>
+  <!-- 4) Partage -->
+  <div class="section">
+    <div class="share-box">
+      <h2>Partagez le test</h2>
+      <p class="share-sub">Vos proches respirent eux aussi chez eux. Offrez-leur 2 minutes de prise de conscience.</p>
+      <div class="share-grid">
+        <button class="btn btn-primary" id="btn-share">
+          <svg class="ic-svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v13"/><path d="M8 7l4-4 4 4"/></svg>
+          Partager
+        </button>
+        <a class="btn btn-ghost" id="share-wa" target="_blank" rel="noopener">WhatsApp</a>
+        <a class="btn btn-ghost" id="share-sms">SMS</a>
+        <a class="btn btn-ghost" id="share-mail">Email</a>
+        <button class="btn btn-ghost" id="btn-copy">
+          <svg class="ic-svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1 0l3-3a5 5 0 0 0-7.1-7.1L14 5"/><path d="M14 11a5 5 0 0 0-7.1 0l-3 3a5 5 0 0 0 7.1 7.1L10 19"/></svg>
+          Copier le lien
+        </button>
+      </div>
+      <p class="copy-toast" id="copy-toast" aria-live="polite"></p>
     </div>
   </div>
 
-  <!-- Partage -->
-  <div class="share-box">
-    <h2>Partagez le test 🌿</h2>
-    <p class="share-sub">Vos proches respirent eux aussi chez eux. Offrez-leur 2 minutes de prise de conscience.</p>
-    <div class="share-grid">
-      <button class="btn btn-primary" id="btn-share">📲 Partager</button>
-      <a class="btn btn-ghost" id="share-wa" target="_blank" rel="noopener">WhatsApp</a>
-      <a class="btn btn-ghost" id="share-sms">SMS</a>
-      <a class="btn btn-ghost" id="share-mail">Email</a>
-      <button class="btn btn-ghost" id="btn-copy">🔗 Copier le lien</button>
-    </div>
-    <p class="copy-toast" id="copy-toast" aria-live="polite"></p>
-  </div>
-
-  <!-- ============== CERCLE VERTUEUX (lien Premium → Fondation, rappelé une seule fois) ============== -->
-  <div class="section" id="sec-premium">
-    <div class="premium-bridge">
+  <!-- 5) Bloc de clôture unique — cercle vertueux vers la Fondation / Green-Got -->
+  <div class="section" id="sec-foundation">
+    <div class="closing">
       <span class="kicker">Le cercle vertueux</span>
       <h2>Consommer mieux, financer la recherche</h2>
-      <p class="bridge">
-        Les coups de pouce glissés dans vos recommandations font partie de l'offre Premium Green-Got. Et il y a un effet
-        double : payer avec la carte Green-Got finance la Fondation — <strong>5 % du chiffre d'affaires + l'arrondi solidaire</strong>.
-        Autrement dit, vos dépenses du quotidien soutiennent la recherche et l'action contre les pesticides, le plastique et les PFAS.
+      <p>
+        Les coups de pouce glissés dans vos recommandations font partie de l'offre Premium Green-Got. Et il y a un
+        effet double : payer avec la carte Green-Got finance la Fondation — <strong>5 % du chiffre d'affaires + l'arrondi
+        solidaire</strong>. Vos dépenses du quotidien soutiennent ainsi la recherche et l'action contre les pesticides,
+        le plastique et les PFAS.
       </p>
-
-      <div class="partner-tip">
-        <span class="pt-label"><span aria-hidden="true">⛰️</span> Coup de pouce Premium</span>
-        <p class="pt-body">
-          Envie de vraiment changer d'air ? <strong>GreenGo</strong> (séjours écoresponsables en France) vous reverse
-          <span class="pt-adv">5 % de cashback</span> avec la carte Premium — prendre soin de soi et de la planète, à la fois.
-          <span class="pt-note">Offre Premium 2025, susceptible d'évoluer. Codes et cashback dans l'app, rubrique « Avantages ».</span>
-        </p>
-      </div>
-
-      <div class="cta-duo">
-        <a class="btn btn-ghost" href="https://green-got.com/" target="_blank" rel="noopener">Voir l'offre Premium Green-Got</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- ============== COMMENT ON AGIT, ENSEMBLE (AXE 5) ============== -->
-  <div class="section" id="sec-foundation">
-    <div class="impact-cta">
-      <h2>Comment on agit, ensemble 🌍</h2>
-      <p class="bridge">
-        Vous venez d'agir pour votre air intérieur. Voici comment agir, plus largement, pour une planète
-        et une santé environnementale préservées — sans coût supplémentaire pour vous.
+      <p class="b-corp">
+        La <strong>Fondation Green-Got</strong> est abritée par la <strong>Fondation de France</strong> ; les projets
+        sont sélectionnés selon des critères stricts (suivi chiffré, transparence, alignement sur les ODD de l'ONU).
+        <strong>Green-Got</strong> est une néobanque qui exclut les énergies fossiles, <strong>certifiée B Corp (2024)</strong>.
       </p>
-
-      <div class="model-points">
-        <div class="mp"><span class="ic">🏦</span><p><strong>Green-Got</strong> est la néobanque qui met l'argent au service du climat et du vivant : elle exclut les énergies fossiles et oriente les flux vers la transition. <strong>Certifiée B Corp (2024).</strong></p></div>
-        <div class="mp"><span class="ic">🤝</span><p>La <strong>Fondation Green-Got</strong>, abritée par la <strong>Fondation de France</strong>, finance la recherche et des actions concrètes contre les pesticides, le plastique et les PFAS, et agit pour le climat, la biodiversité, la santé et la solidarité.</p></div>
-        <div class="mp"><span class="ic">🔁</span><p>Financement : <strong>5 % du chiffre d'affaires</strong> de Green-Got + l'arrondi solidaire des membres. Ouvrir un compte ou arrondir ses paiements finance directement ces projets.</p></div>
-        <div class="mp"><span class="ic">✅</span><p>Projets sélectionnés par un comité aux <strong>critères stricts</strong> : suivi chiffré, transparence, alignement sur les ODD de l'ONU, principe « do no harm » sur la biodiversité.</p></div>
-      </div>
 
       <div class="kpi-row">
         <div class="kpi"><div class="n">~2 M€</div><div class="l">déjà collectés depuis 2022</div></div>
@@ -959,40 +826,25 @@ footer .brand-line { font-weight: 800; color: var(--text); margin-top: 12px; }
         <div class="kpi"><div class="n">5 %</div><div class="l">du CA reversé</div></div>
       </div>
 
-      <h3 style="color:var(--lime);margin-top:6px;">Quelques projets financés</h3>
-      <div class="projects">
-        <div class="proj"><h3>Wings of the Ocean</h3><p>Dépollution des mers et littoraux (plastique), éducation des populations.<span class="impact">135+ tonnes de déchets récupérés</span></p></div>
-        <div class="proj"><h3>FEVE</h3><p>Achat de terres mises à disposition de nouveaux agriculteurs en agroécologie (moins de pesticides).<span class="impact">Renouvellement des générations</span></p></div>
-        <div class="proj"><h3>Cœur de Forêt</h3><p>Préservation des forêts en France et à l'international, action sur les causes de la déforestation.</p></div>
-        <div class="proj"><h3>Centre Athénas</h3><p>Protection et soin de la faune sauvage.</p></div>
-        <div class="proj"><h3>Refuge GroinGroin</h3><p>Refuge pour animaux de ferme rescapés.</p></div>
-        <div class="proj"><h3>Impact mesurable</h3><p>Chaque euro compte :<span class="impact">~40 g de plastique ramassés · ~15,86 m² reverdis · 1 palétuvier replanté</span></p></div>
-      </div>
-
       <div class="cta-duo">
         <a class="btn btn-primary" href="https://fondation.green-got.com/" target="_blank" rel="noopener">Découvrir la Fondation Green-Got</a>
-        <a class="btn btn-secondary" href="https://green-got.com/" target="_blank" rel="noopener">Découvrir Green-Got</a>
+        <a class="btn btn-secondary" href="https://green-got.com/" target="_blank" rel="noopener">Voir l'offre Green-Got</a>
       </div>
-      <p style="text-align:center;font-size:0.85rem;color:var(--muted);margin:18px 0 0;">
-        Vous pouvez aussi soutenir la recherche sur la santé environnementale et les PFAS, au cœur de la mission de la Fondation.
-      </p>
     </div>
   </div>
 
   <div class="restart-wrap">
-    <button class="btn btn-secondary" id="btn-restart">↻ Refaire le test</button>
+    <button class="btn btn-secondary" id="btn-restart">Refaire le test</button>
   </div>
 </section>
 
 </main>
 
 <!-- ====================================================== -->
-<!-- PIED DE PAGE                                            -->
+<!-- PIED DE PAGE — disclaimer légal, une seule fois        -->
 <!-- ====================================================== -->
 <footer>
-  <p>Cet outil est informatif. Il s'appuie sur vos déclarations et ne remplace ni une mesure instrumentale de la qualité de l'air, ni un avis médical.</p>
-  <p>Pour le radon, consultez les ressources publiques officielles de votre région (IRSN, ARS).</p>
-  <p>Affirmations scientifiques et réglementaires présentées avec leur source et leur niveau de preuve. En cas de doute, référez-vous toujours à la source officielle.</p>
+  <p>Outil informatif et anonyme, sans collecte de données. Il s'appuie sur vos déclarations et ne remplace ni une mesure instrumentale de la qualité de l'air, ni un avis médical. Pour le radon, consultez les ressources publiques officielles de votre région (IRSN, ARS).</p>
   <p class="brand-line">Un outil proposé par la Fondation Green-Got pour la santé environnementale.</p>
   <p>© <span id="year"></span> · <a href="https://fondation.green-got.com/" target="_blank" rel="noopener">fondation.green-got.com</a> · <a href="https://green-got.com/" target="_blank" rel="noopener">green-got.com</a></p>
 </footer>
@@ -1003,12 +855,11 @@ footer .brand-line { font-weight: 800; color: var(--text); margin-top: 12px; }
 /* ==================================================================
    CONFIGURATION — QUESTIONS & LOGIQUE DE SCORE
    ------------------------------------------------------------------
-   Logique inchangée par rapport à la version d'origine :
-   - QUESTIONS : liste des questions (ajout de 2 questions PFAS).
-   - SIGNALS   : catalogue des signaux (pénalité + conseil + sources).
+   Logique INCHANGÉE par rapport à la version d'origine :
+   - QUESTIONS : liste des questions (libellés sans emoji).
+   - SIGNALS   : catalogue des signaux (pénalité + conseil + science + partenaire).
    - STRENGTHS : messages "points forts".
    - WEIGHTS / TIERS : barème et paliers de score.
-   Le total de questions est dynamique : la progression s'adapte.
    ================================================================== */
 
 /* Barème de points retirés par catégorie de signal */
@@ -1021,36 +872,38 @@ var WEIGHTS = {
 
 /* ------------------------------------------------------------------
    SIGNALS : catalogue de tous les signaux possibles.
-   - cat    : catégorie (détermine le poids)
-   - report : { fact, why, action } — texte affiché dans le rapport
-   - src    : (optionnel) numéros de références à citer (voir #ref-n)
+   - cat     : catégorie (détermine le poids)
+   - report  : { fact, why, action } — texte affiché dans le rapport
+   - science : (optionnel) mini-résumé en clair, source nommée en toutes lettres
+   - partner : (optionnel) encart "Pour passer à l'action" (1 seul, lien réel)
    ------------------------------------------------------------------ */
 var SIGNALS = {
   ventilation: {
     cat: 'strong',
     report: {
       fact: "Votre logement n'a pas de renouvellement d'air identifié.",
-      why: "C'est le point le plus important de votre diagnostic : sans renouvellement d'air régulier, tout le reste s'accumule. Une meilleure ventilation est associée à moins d'infections respiratoires et de meilleures performances cognitives.",
-      action: "Le geste le plus efficace est gratuit — on y vient juste après : ouvrir grand les fenêtres, tous les jours. Vérifiez aussi que votre VMC fonctionne."
+      why: "Sans renouvellement d'air régulier, tout le reste s'accumule : c'est le point le plus important de votre diagnostic.",
+      action: "Ouvrez grand les fenêtres tous les jours, et vérifiez que votre VMC fonctionne."
     },
-    src: [4, 5]
+    science: "Les recherches montrent qu'une meilleure ventilation est associée à moins d'infections respiratoires, moins d'absentéisme et de meilleures performances cognitives (American Journal of Public Health, 2024 ; Harvard T.H. Chan School of Public Health). Ce sont des associations observées, pas des preuves de cause à effet."
   },
   aeration_hiver: {
     cat: 'strong',
     report: {
       fact: "Vous aérez rarement, surtout l'hiver.",
       why: "En hiver, on garde tout fermé pour la chaleur — et l'air intérieur se charge en humidité et en polluants.",
-      action: "Le bon réflexe : ouvrir en grand 2 fois 10 minutes par jour. C'est court, ça ne refroidit pas les murs, et ça change tout."
+      action: "Ouvrez en grand 2 fois 10 minutes par jour. C'est court, ça ne refroidit pas les murs, et ça change tout."
     },
-    src: [4]
+    science: "Une vaste étude chez des personnes âgées a observé un lien entre aération hivernale plus fréquente et risque réduit de déclin cognitif. Il s'agit d'une association, pas d'une preuve de cause à effet — mais une raison de plus d'ouvrir ses fenêtres."
   },
   tabac: {
     cat: 'strong',
     report: {
       fact: "On fume à l'intérieur du logement.",
-      why: "Fumer à l'intérieur est l'une des sources de pollution les plus directes pour l'air du logement, et elle s'accroche aux surfaces longtemps après.",
+      why: "C'est l'une des sources de pollution les plus directes pour l'air du logement, et elle s'accroche aux surfaces longtemps après.",
       action: "Fumer dehors change radicalement la qualité de l'air, surtout s'il y a des enfants."
-    }
+    },
+    science: "La fumée de tabac dans l'habitat est reconnue par l'OMS comme une source majeure de pollution de l'air intérieur."
   },
   chambre_jamais: {
     cat: 'strong',
@@ -1060,39 +913,44 @@ var SIGNALS = {
       action: "Ouvrir grand 10 minutes chaque matin évacue l'air vicié de la nuit — beaucoup de gens disent mieux dormir ensuite."
     },
     partner: {
-      icon: '🧘',
-      html: "Pour un endormissement plus serein, le programme « Sommeil » de <strong>Petit Bambou</strong> (méditation, respiration) est <span class=\"pt-adv\">offert 1 mois</span> via l'app Green-Got.",
-      linkText: "En profiter ↗",
+      html: "Pour un endormissement plus serein, le programme « Sommeil » de <strong>Le Petit Bambou</strong> (méditation, respiration) est <span class=\"pt-adv\">offert 1 mois</span> via l'app Green-Got.",
+      linkText: "En profiter",
       href: 'https://green-got.com/',
-      note: "Offre Premium 2025, susceptible d'évoluer. Code à activer dans la rubrique « carte cadeaux »."
+      note: "Offre Premium 2025, susceptible d'évoluer. Code à activer dans la rubrique « Avantages »."
     }
   },
   radon: {
     cat: 'strong',
     report: {
       fact: "Le radon de votre logement n'a jamais été évalué.",
-      why: "Le radon est un gaz naturel, invisible et inodore, qui peut s'accumuler dans les logements — c'est l'un des risques de l'air intérieur qu'aucune habitude ne permet de \"sentir\".",
-      action: "Selon les régions, il mérite un test simple (kit peu coûteux). Aérer et ventiler aide aussi à réduire sa concentration. Renseignez-vous sur le risque de votre commune via les ressources publiques officielles."
+      why: "Le radon est un gaz naturel, invisible et inodore, qui peut s'accumuler dans les logements — un risque qu'aucune habitude ne permet de « sentir ».",
+      action: "Selon les régions, un test simple (kit peu coûteux) est utile. Aérer et ventiler aide aussi à réduire sa concentration."
     },
-    src: [7]
+    science: "Les autorités sanitaires (IRSN, ARS) classent le radon parmi les principales causes de cancer du poumon après le tabac ; un kit de mesure simple permet de connaître le niveau de son logement."
   },
   pfas_ustensiles: {
     cat: 'medium',
     report: {
       fact: "Vous cuisinez avec des poêles antiadhésives rayées ou abîmées.",
-      why: "Les revêtements antiadhésifs dégradés peuvent libérer des PFAS, ces \"polluants éternels\" qui s'accumulent dans le corps et qu'on retrouve aussi dans la poussière domestique.",
-      action: "Remplacez les ustensiles rayés ; préférez l'inox, la fonte, le verre ou la céramique sans PFAS. Voir la section PFAS dédiée ci-dessous."
+      why: "Les revêtements antiadhésifs dégradés peuvent libérer des PFAS, ces « polluants éternels » qui s'accumulent dans le corps et la poussière domestique.",
+      action: "Remplacez les ustensiles rayés ; préférez l'inox, la fonte, le verre ou la céramique sans PFAS."
     },
-    src: [8, 9]
+    science: "Selon le ministère de la Santé, remplacer les ustensiles antiadhésifs dégradés et privilégier une alimentation peu transformée réduit l'exposition aux PFAS.",
+    partner: {
+      html: "Manger bio, de saison et moins transformé réduit aussi l'exposition aux pesticides et aux PFAS. <strong>Biocoop</strong> vous reverse <span class=\"pt-adv\">4 % de vos achats</span> avec la carte Premium ; sans magasin proche, <strong>La Fourche</strong> (bio en ligne) offre <span class=\"pt-adv\">−50 % d'adhésion pendant 2 ans</span>.",
+      linkText: "Voir l'offre",
+      href: 'https://green-got.com/',
+      note: "Offres Premium 2025, susceptibles d'évoluer. À activer dans l'app Green-Got, rubrique « Avantages »."
+    }
   },
   poussiere: {
     cat: 'context',
     report: {
       fact: "Vous dépoussiérez rarement votre logement.",
       why: "Particules, allergènes et PFAS se logent dans la poussière domestique : c'est un réservoir direct dans l'air que vous respirez.",
-      action: "Dépoussiérez régulièrement (chiffon humide, aspirateur avec filtre) et aérez après : un geste simple, lié à la fois à la qualité de l'air et à l'exposition aux PFAS."
+      action: "Dépoussiérez régulièrement (chiffon humide, aspirateur avec filtre) et aérez après."
     },
-    src: [8]
+    science: "Le ministère de la Santé rappelle que les PFAS et allergènes s'accumulent dans la poussière domestique : un dépoussiérage régulier réduit ce réservoir."
   },
   cuisine_douche: {
     cat: 'medium',
@@ -1107,7 +965,7 @@ var SIGNALS = {
     report: {
       fact: "Vous avez du mobilier neuf ou repeint récemment.",
       why: "Cette odeur de neuf, ce sont des composés organiques volatils (COV) qui s'évaporent pendant plusieurs semaines.",
-      action: "Aérez davantage la pièce concernée pour le moment — c'est temporaire, et l'aération accélère nettement le retour à la normale."
+      action: "Aérez davantage la pièce concernée pour le moment — c'est temporaire, et l'aération accélère le retour à la normale."
     }
   },
   humidite: {
@@ -1131,15 +989,15 @@ var SIGNALS = {
     report: {
       fact: "Vous utilisez régulièrement bougies, encens ou diffuseurs.",
       why: "Bougies, encens et diffuseurs sentent bon, mais leur combustion libère de fines particules.",
-      action: "Pas besoin d'arrêter : l'essentiel est d'aérer pendant et après, surtout en pièce fermée. L'encens est le plus chargé — réservez-le aux moments où vous pouvez ouvrir une fenêtre."
+      action: "Pas besoin d'arrêter : aérez pendant et après, surtout en pièce fermée. L'encens est le plus chargé — réservez-le aux moments où vous pouvez ouvrir une fenêtre."
     }
   },
   produits: {
     cat: 'context',
     report: {
       fact: "Vous utilisez surtout des produits ménagers parfumés ou en spray.",
-      why: "Les produits ménagers parfumés et en spray diffusent des composés volatils dans l'air que vous respirez en faisant le ménage.",
-      action: "Le réflexe simple : ouvrir une fenêtre pendant que vous nettoyez. Les produits basiques (vinaigre, savon noir) font le travail avec moins d'émissions."
+      why: "Ces produits diffusent des composés volatils dans l'air que vous respirez en faisant le ménage.",
+      action: "Ouvrez une fenêtre pendant que vous nettoyez. Les produits basiques (vinaigre, savon noir) font le travail avec moins d'émissions."
     }
   },
   linge: {
@@ -1178,33 +1036,34 @@ var SIGNALS = {
 };
 
 /* ------------------------------------------------------------------
-   STRENGTHS : messages "points forts" (réponse "good")
+   STRENGTHS : messages "points forts" (réponse "good") — sans emoji
    ------------------------------------------------------------------ */
 var STRENGTHS = {
-  ventilation: "Votre logement dispose d'un vrai renouvellement d'air — la base la plus importante est posée. 👏",
+  ventilation: "Votre logement dispose d'un vrai renouvellement d'air — la base la plus importante est posée.",
   aeration:    "Vous aérez régulièrement, même quand il fait froid : excellent réflexe.",
   cuisine:     "Vous aérez pendant cuisine et douche : vous évacuez l'humidité au bon moment.",
   tabac:       "Pas de fumée à l'intérieur : votre air en sort grandement préservé.",
   chambre:     "Vous aérez votre chambre chaque jour : un sommeil dans un air plus sain.",
   humidite:    "Pas d'humidité visible : un bon signe contre les moisissures.",
-  radon:       "Vous avez la question du radon en tête : peu de gens y pensent, bravo.",
+  radon:       "Vous avez la question du radon en tête : peu de gens y pensent.",
   produits:    "Vous privilégiez des produits d'entretien simples : moins d'émissions dans l'air.",
-  ustensiles:  "Vos ustensiles de cuisine sont sains (inox/fonte/verre) : moins d'exposition aux PFAS. 🌿",
+  ustensiles:  "Vos ustensiles de cuisine sont sains (inox/fonte/verre) : moins d'exposition aux PFAS.",
   poussiere:   "Vous dépoussiérez régulièrement : moins de particules et de PFAS dans la poussière."
 };
 
 /* ------------------------------------------------------------------
    QUESTIONS — 16 questions d'origine + 2 questions PFAS (n°7 et n°12)
+   Libellés sans emoji (sobriété visuelle). Valeurs/logique inchangées.
    ------------------------------------------------------------------ */
 var QUESTIONS = [
   {
     id: 'logement',
     title: "Quel type de logement habitez-vous ?",
     options: [
-      { label: "🏡 Maison", value: 'maison' },
-      { label: "🏢 Appartement", value: 'appart' },
-      { label: "🛏️ Studio", value: 'studio' },
-      { label: "🏘️ Autre", value: 'autre' }
+      { label: "Maison", value: 'maison' },
+      { label: "Appartement", value: 'appart' },
+      { label: "Studio", value: 'studio' },
+      { label: "Autre", value: 'autre' }
     ]
   },
   {
@@ -1221,29 +1080,29 @@ var QUESTIONS = [
     id: 'renouvellement',
     title: "Comment l'air se renouvelle-t-il chez vous ?",
     options: [
-      { label: "💨 VMC (ventilation mécanique)", value: 'vmc', good: 'ventilation' },
-      { label: "🪟 Grilles d'aération aux fenêtres", value: 'grilles', good: 'ventilation' },
-      { label: "🤷 Aucun système, j'ouvre les fenêtres", value: 'aucun', signal: 'ventilation' },
-      { label: "❓ Je ne sais pas", value: 'inconnu', signal: 'ventilation' }
+      { label: "VMC (ventilation mécanique)", value: 'vmc', good: 'ventilation' },
+      { label: "Grilles d'aération aux fenêtres", value: 'grilles', good: 'ventilation' },
+      { label: "Aucun système, j'ouvre les fenêtres", value: 'aucun', signal: 'ventilation' },
+      { label: "Je ne sais pas", value: 'inconnu', signal: 'ventilation' }
     ]
   },
   {
     id: 'aeration',
     title: "À quelle fréquence aérez-vous en ouvrant grand les fenêtres ?",
     options: [
-      { label: "🌬️ Plusieurs fois par jour", value: 'souvent', good: 'aeration' },
-      { label: "☀️ Une fois par jour", value: 'quotidien', good: 'aeration' },
-      { label: "📅 Quelques fois par semaine", value: 'semaine' },
-      { label: "❄️ Rarement, surtout l'hiver", value: 'rare', signal: 'aeration_hiver' }
+      { label: "Plusieurs fois par jour", value: 'souvent', good: 'aeration' },
+      { label: "Une fois par jour", value: 'quotidien', good: 'aeration' },
+      { label: "Quelques fois par semaine", value: 'semaine' },
+      { label: "Rarement, surtout l'hiver", value: 'rare', signal: 'aeration_hiver' }
     ]
   },
   {
     id: 'cuisine',
     title: "Aérez-vous pendant et après la cuisine et la douche ?",
     options: [
-      { label: "✅ Toujours", value: 'toujours', good: 'cuisine' },
-      { label: "🔸 Parfois", value: 'parfois' },
-      { label: "❌ Jamais", value: 'jamais', signal: 'cuisine_douche' }
+      { label: "Toujours", value: 'toujours', good: 'cuisine' },
+      { label: "Parfois", value: 'parfois' },
+      { label: "Jamais", value: 'jamais', signal: 'cuisine_douche' }
     ]
   },
   {
@@ -1261,20 +1120,20 @@ var QUESTIONS = [
     title: "Vos poêles et casseroles antiadhésives sont-elles rayées ou abîmées ?",
     hint: "Les revêtements antiadhésifs dégradés peuvent libérer des PFAS.",
     options: [
-      { label: "🍳 Je cuisine en inox, fonte, verre ou céramique", value: 'sains', good: 'ustensiles' },
-      { label: "✅ Non, mes antiadhésifs sont en bon état", value: 'bon_etat', good: 'ustensiles' },
-      { label: "❓ Je ne sais pas / je ne fais pas attention", value: 'inconnu' },
-      { label: "⚠️ Oui, certaines sont rayées", value: 'rayees', signal: 'pfas_ustensiles' }
+      { label: "Je cuisine en inox, fonte, verre ou céramique", value: 'sains', good: 'ustensiles' },
+      { label: "Non, mes antiadhésifs sont en bon état", value: 'bon_etat', good: 'ustensiles' },
+      { label: "Je ne sais pas / je ne fais pas attention", value: 'inconnu' },
+      { label: "Oui, certaines sont rayées", value: 'rayees', signal: 'pfas_ustensiles' }
     ]
   },
   {
     id: 'produits',
     title: "Quels produits d'entretien utilisez-vous le plus souvent ?",
     options: [
-      { label: "🌱 Produits simples (vinaigre, savon noir)", value: 'simples', good: 'produits' },
-      { label: "🤷 Je ne fais pas attention", value: 'aucune_attention' },
-      { label: "🧴 Sprays multi-usages", value: 'sprays', signal: 'produits' },
-      { label: "🌸 Classiques parfumés", value: 'parfumes', signal: 'produits' }
+      { label: "Produits simples (vinaigre, savon noir)", value: 'simples', good: 'produits' },
+      { label: "Je ne fais pas attention", value: 'aucune_attention' },
+      { label: "Sprays multi-usages", value: 'sprays', signal: 'produits' },
+      { label: "Classiques parfumés", value: 'parfumes', signal: 'produits' }
     ]
   },
   {
@@ -1290,9 +1149,9 @@ var QUESTIONS = [
     id: 'tabac',
     title: "Quelqu'un fume-t-il à l'intérieur du logement (y compris vape) ?",
     options: [
-      { label: "🚭 Non", value: 'non', good: 'tabac' },
-      { label: "🌿 Sur le balcon ou dehors", value: 'dehors', good: 'tabac' },
-      { label: "🚬 Oui", value: 'oui', signal: 'tabac' }
+      { label: "Non", value: 'non', good: 'tabac' },
+      { label: "Sur le balcon ou dehors", value: 'dehors', good: 'tabac' },
+      { label: "Oui", value: 'oui', signal: 'tabac' }
     ]
   },
   {
@@ -1310,9 +1169,9 @@ var QUESTIONS = [
     title: "À quelle fréquence dépoussiérez-vous votre logement ?",
     hint: "Particules, allergènes et PFAS se logent dans la poussière.",
     options: [
-      { label: "🧽 Chaque semaine", value: 'semaine', good: 'poussiere' },
-      { label: "🔸 De temps en temps", value: 'parfois' },
-      { label: "❌ Rarement", value: 'rare', signal: 'poussiere' }
+      { label: "Chaque semaine", value: 'semaine', good: 'poussiere' },
+      { label: "De temps en temps", value: 'parfois' },
+      { label: "Rarement", value: 'rare', signal: 'poussiere' }
     ]
   },
   {
@@ -1328,10 +1187,10 @@ var QUESTIONS = [
     id: 'radon',
     title: "Connaissez-vous le niveau de radon de votre région, et votre logement a-t-il été testé ?",
     options: [
-      { label: "✅ Testé (niveau connu / maîtrisé)", value: 'teste', good: 'radon' },
-      { label: "🟢 Je vis en zone à faible risque", value: 'faible_risque', good: 'radon' },
-      { label: "❌ Jamais testé", value: 'jamais', signal: 'radon' },
-      { label: "❓ Je ne sais pas ce qu'est le radon", value: 'inconnu', signal: 'radon' }
+      { label: "Testé (niveau connu / maîtrisé)", value: 'teste', good: 'radon' },
+      { label: "Je vis en zone à faible risque", value: 'faible_risque', good: 'radon' },
+      { label: "Jamais testé", value: 'jamais', signal: 'radon' },
+      { label: "Je ne sais pas ce qu'est le radon", value: 'inconnu', signal: 'radon' }
     ]
   },
   {
@@ -1340,10 +1199,10 @@ var QUESTIONS = [
     hint: "Plusieurs choix possibles.",
     multi: true,
     options: [
-      { label: "👶 Bébé / enfants en bas âge", value: 'enfants', sensitive: true },
-      { label: "🫁 Personne asthmatique ou allergique", value: 'asthme', sensitive: true },
-      { label: "👵 Personne âgée", value: 'agee', sensitive: true },
-      { label: "🧑 Adultes sans sensibilité particulière", value: 'adultes' }
+      { label: "Bébé / enfants en bas âge", value: 'enfants', sensitive: true },
+      { label: "Personne asthmatique ou allergique", value: 'asthme', sensitive: true },
+      { label: "Personne âgée", value: 'agee', sensitive: true },
+      { label: "Adultes sans sensibilité particulière", value: 'adultes' }
     ]
   },
   {
@@ -1358,27 +1217,27 @@ var QUESTIONS = [
     id: 'chambre',
     title: "Aérez-vous votre chambre chaque jour ?",
     options: [
-      { label: "☀️ Oui, tous les matins", value: 'matin', good: 'chambre' },
-      { label: "🔸 Parfois", value: 'parfois' },
-      { label: "❌ Quasiment jamais", value: 'jamais', signal: 'chambre_jamais' }
+      { label: "Oui, tous les matins", value: 'matin', good: 'chambre' },
+      { label: "Parfois", value: 'parfois' },
+      { label: "Quasiment jamais", value: 'jamais', signal: 'chambre_jamais' }
     ]
   },
   {
     id: 'nuit',
     title: "Dormez-vous portes et fenêtres fermées dans une pièce sans ventilation ?",
     options: [
-      { label: "💨 Il y a une ventilation", value: 'ventilation' },
-      { label: "🚪 La porte reste ouverte", value: 'porte_ouverte' },
-      { label: "🔒 Oui, tout fermé", value: 'ferme', signal: 'chambre_fermee' }
+      { label: "Il y a une ventilation", value: 'ventilation' },
+      { label: "La porte reste ouverte", value: 'porte_ouverte' },
+      { label: "Oui, tout fermé", value: 'ferme', signal: 'chambre_fermee' }
     ]
   }
 ];
 
-/* Encouragements affichés à certaines étapes (gamification douce) */
+/* Encouragements affichés à certaines étapes (gamification douce, sans emoji) */
 var ENCOURAGEMENTS = {
-  4:  "Beau début ! Continuez 🌬️",
-  8:  "Vous êtes à mi-chemin — gardez le rythme 💪",
-  13: "Dernière ligne droite 🌿"
+  4:  "Beau début ! Continuez.",
+  8:  "Vous êtes à mi-chemin — gardez le rythme.",
+  13: "Dernière ligne droite."
 };
 
 /* ------------------------------------------------------------------
@@ -1527,6 +1386,10 @@ function hasSensitivePerson() {
   if (!Array.isArray(occ)) return false;
   return occ.indexOf('enfants') !== -1 || occ.indexOf('asthme') !== -1 || occ.indexOf('agee') !== -1;
 }
+function hasBaby() {
+  var occ = state.answers['occupants'];
+  return Array.isArray(occ) && occ.indexOf('enfants') !== -1;
+}
 
 function computeScore() {
   var score = 100;
@@ -1591,95 +1454,140 @@ function runCalc() {
 /* Ordre de priorité d'affichage : forts > moyens > contextuels > aggravants */
 var CAT_ORDER = { strong: 0, medium: 1, context: 2, aggrav: 3 };
 
-/* Génère les puces de sources (citations cliquables) pour une carte */
-function citeHtml(src) {
-  if (!src || !src.length) return '';
-  var chips = src.map(function (n) {
-    return '<a class="cite" href="#ref-' + n + '">[' + n + ']</a>';
-  }).join('');
-  return '<div class="cite-row"><span class="cite-lead">Sources :</span>' + chips + '</div>';
+/* Échappe le HTML pour les insertions de texte simple */
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-/* Génère l'encart partenaire discret ("Coup de pouce Premium") d'une carte, si défini.
-   Le partenaire arrive APRÈS le conseil : il facilite le geste, il ne le remplace pas. */
+/* Mini-résumé scientifique en clair, sans renvoi numéroté */
+function sciHtml(sci) {
+  if (!sci) return '';
+  return '<p class="sci-note">' + sci + '</p>';
+}
+
+/* Encart partenaire discret ("Pour passer à l'action") — placé sous la reco
+   qu'il soutient. Le partenaire facilite le geste, il ne le remplace pas. */
 function partnerHtml(p) {
   if (!p) return '';
   var link = p.href
-    ? ' <a class="pt-link" href="' + p.href + '" target="_blank" rel="noopener">' + (p.linkText || 'En profiter ↗') + '</a>'
+    ? ' <a class="pt-link" href="' + p.href + '" target="_blank" rel="noopener">' + (p.linkText || 'En savoir plus') + ' →</a>'
     : '';
   var note = p.note ? '<span class="pt-note">' + p.note + '</span>' : '';
   return '<div class="partner-tip">' +
-    '<span class="pt-label"><span aria-hidden="true">' + (p.icon || '🌿') + '</span> ' + (p.label || 'Coup de pouce Premium') + '</span>' +
+    '<span class="pt-label">Pour passer à l\'action</span>' +
     '<p class="pt-body">' + p.html + link + note + '</p>' +
     '</div>';
+}
+
+/* Phrase de synthèse personnalisée (sous le score) */
+function buildSynthesis(result) {
+  var n = result.activated.length;
+  if (n === 0) {
+    return "Vos habitudes sont déjà très saines : il s'agit surtout de garder le cap, en commençant par l'aération quotidienne.";
+  }
+  if (result.score >= 70) {
+    return "Bonne base. Il reste " + n + (n > 1 ? " réflexes simples" : " réflexe simple") + " à installer pour gagner encore en qualité d'air — on commence par le plus efficace.";
+  }
+  if (result.score >= 50) {
+    return "Plusieurs leviers simples peuvent nettement améliorer votre air intérieur. Voici, dans l'ordre, par où commencer.";
+  }
+  return "Quelques gestes gratuits feront une vraie différence chez vous. Concentrez-vous d'abord sur les priorités ci-dessous.";
 }
 
 function buildReport() {
   var result = computeScore();
   renderGauge(result.score);
+  document.getElementById('synthesis').textContent = buildSynthesis(result);
 
-  // ---- Points forts ----
+  // ---- Points forts (liste compacte, une ligne chacun) ----
   var strEl = document.getElementById('strengths-list');
   strEl.innerHTML = '';
-  var strengthsToShow = result.strengths.slice(0, 3);
+  var strengthsToShow = result.strengths.slice(0, 4);
   if (strengthsToShow.length === 0) {
+    STRENGTHS._default = "Vous avez pris le temps de faire ce test : c'est déjà le premier pas vers un air plus sain chez vous.";
     strengthsToShow = ['_default'];
-    STRENGTHS._default = "Vous avez pris le temps de faire ce test : c'est déjà le premier pas vers un air plus sain chez vous. 🌿";
   }
   strengthsToShow.forEach(function (key) {
-    var card = document.createElement('div');
-    card.className = 'card positive';
-    card.innerHTML = '<div class="row"><span class="ic">✅</span><span>' + STRENGTHS[key] + '</span></div>';
-    strEl.appendChild(card);
+    var li = document.createElement('li');
+    li.textContent = STRENGTHS[key];
+    strEl.appendChild(li);
   });
 
-  // ---- Encart personne sensible ----
+  // ---- Encart personne sensible (+ partenaire Joone si bébé) ----
   var sensSlot = document.getElementById('sensitive-slot');
   sensSlot.innerHTML = '';
   if (result.sensitive) {
+    var babyTip = hasBaby() ? partnerHtml({
+      html: "Les PFAS et substances controversées se logent aussi dans certains cosmétiques et produits bébé. <strong>Joone</strong> propose couches françaises et soins testés ; avec la carte Premium Green-Got, <span class=\"pt-adv\">11 % de vos commandes</span> vous sont reversés.",
+      linkText: "En savoir plus",
+      href: 'https://green-got.com/',
+      note: "Offre Premium 2025, susceptible d'évoluer. Cashback limité à 1 transaction par mois et par membre, pendant les 12 mois suivant le 1ᵉʳ achat."
+    }) : '';
     var box = document.createElement('div');
     box.className = 'sensitive-box';
     box.innerHTML =
-      '<span class="ic" aria-hidden="true">💚</span>' +
-      '<div><h3>Une attention particulière</h3>' +
+      '<h3>Une attention particulière</h3>' +
       '<p>Une personne plus sensible vit chez vous : enfant, personne asthmatique ou âgée. ' +
-      'Les gestes ci-dessous comptent encore plus pour elle, en particulier dans sa chambre.</p></div>';
+      'Les gestes ci-dessous comptent encore plus pour elle, en particulier dans sa chambre.</p>' +
+      babyTip;
     sensSlot.appendChild(box);
   }
 
-  // ---- Priorités (signaux triés) ----
+  // ---- Priorités : on ne montre que les recos réellement pertinentes ----
   var prioEl = document.getElementById('priorities-list');
   prioEl.innerHTML = '';
   var sorted = result.activated.slice().sort(function (a, b) {
     return CAT_ORDER[SIGNALS[a].cat] - CAT_ORDER[SIGNALS[b].cat];
   });
 
-  var secPrio = document.getElementById('sec-priorities');
+  var prioTitle = document.getElementById('prio-title');
+  var prioIntro = document.getElementById('prio-intro');
+
   if (sorted.length === 0) {
-    secPrio.querySelector('h2').textContent = "🎯 Rien d'urgent à signaler";
-    var ok = document.createElement('div');
-    ok.className = 'card priority';
-    ok.innerHTML = '<div class="fact">Vos habitudes sont déjà très saines.</div>' +
-      '<div class="row"><span class="ic">🌿</span><span>Continuez ainsi, et gardez le réflexe d\'aération quotidien ci-dessous.</span></div>';
-    prioEl.appendChild(ok);
+    prioTitle.textContent = "Le geste à garder";
+    prioIntro.textContent = "Rien d'urgent à signaler — voici le réflexe qui fait toute la différence.";
+    prioEl.appendChild(makeRecoCard({
+      report: {
+        fact: "Aérez 2 × 10 min par jour, même l'hiver.",
+        why: "Ouvrir grand 10 minutes matin et soir renouvelle l'air sans refroidir les murs.",
+        action: "C'est gratuit, rapide, et c'est le geste le plus efficace de tous. Continuez ainsi."
+      }
+    }));
   } else {
-    secPrio.querySelector('h2').textContent = "🎯 Vos " + Math.min(3, sorted.length) + " priorités";
-    sorted.slice(0, 3).forEach(function (key) {
-      var sig = SIGNALS[key];
-      var r = sig.report;
-      var card = document.createElement('div');
-      card.className = 'card priority';
-      card.innerHTML =
-        '<div class="fact">' + r.fact + '</div>' +
-        '<div class="row"><span class="ic">💡</span><span><span class="lbl lbl-why">Pourquoi ça compte : </span>' + r.why + '</span></div>' +
-        '<div class="row"><span class="ic">✅</span><span><span class="lbl">Ce que vous pouvez faire (gratuit ou accessible) : </span>' + r.action + '</span></div>' +
-        citeHtml(sig.src) +
-        partnerHtml(sig.partner);
-      prioEl.appendChild(card);
+    var shown = sorted.slice(0, 4);
+    prioTitle.textContent = "Vos " + shown.length + (shown.length > 1 ? " priorités" : " priorité");
+    shown.forEach(function (key) {
+      prioEl.appendChild(makeRecoCard(SIGNALS[key]));
     });
+
+    // Ancre universelle : l'aération, si elle n'est pas déjà couverte
+    var covered = shown.indexOf('ventilation') !== -1 || shown.indexOf('aeration_hiver') !== -1;
+    if (!covered) {
+      prioEl.appendChild(makeRecoCard({
+        report: {
+          fact: "Le geste n°1 : aérez 2 × 10 min par jour, même l'hiver.",
+          why: "Ouvrir grand 10 minutes matin et soir renouvelle l'air sans refroidir les murs.",
+          action: "C'est gratuit, rapide, et c'est le geste le plus efficace de tous."
+        }
+      }));
+    }
   }
 
   showScreen('report');
+}
+
+/* Construit une carte de recommandation (titre d'action + 2 phrases + science + partenaire) */
+function makeRecoCard(sig) {
+  var r = sig.report;
+  var card = document.createElement('div');
+  card.className = 'card reco';
+  card.innerHTML =
+    '<h3 class="reco-title">' + esc(r.fact) + '</h3>' +
+    '<p class="reco-why">' + esc(r.why) + '</p>' +
+    '<p class="reco-do"><span class="lbl">À faire :</span> ' + esc(r.action) + '</p>' +
+    sciHtml(sig.science) +
+    partnerHtml(sig.partner);
+  return card;
 }
 
 /* Jauge circulaire animée */
@@ -1693,7 +1601,6 @@ function renderGauge(score) {
 
   var tier = getTier(score);
   document.getElementById('tier-label').textContent = tier.label;
-  document.getElementById('tier-phrase').textContent = tier.phrase;
 
   // Couleur de la jauge selon palier (toujours dans la gamme verte, jamais alarmiste)
   var color = score >= 70 ? '#b7f651' : (score >= 50 ? '#9be04a' : '#7fc23a');
@@ -1726,7 +1633,7 @@ function renderGauge(score) {
    PARTAGE
    ================================================================== */
 var SHARE_URL = window.location.href.split('#')[0];
-var SHARE_MSG = "J'ai testé mon air intérieur en 2 min, et toi ? 🌿";
+var SHARE_MSG = "J'ai testé mon air intérieur en 2 min, et toi ?";
 
 document.getElementById('btn-share').addEventListener('click', function () {
   if (navigator.share) {
@@ -1744,7 +1651,7 @@ document.getElementById('btn-copy').addEventListener('click', copyLink);
 
 function copyLink() {
   var toast = document.getElementById('copy-toast');
-  var done = function () { toast.textContent = "✅ Lien copié !"; setTimeout(function(){ toast.textContent=''; }, 2500); };
+  var done = function () { toast.textContent = "Lien copié !"; setTimeout(function(){ toast.textContent=''; }, 2500); };
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(SHARE_URL).then(done).catch(fallbackCopy);
   } else {
@@ -1763,7 +1670,7 @@ var fullMsg = encodeURIComponent(SHARE_MSG + " " + SHARE_URL);
 document.getElementById('share-wa').href = "https://wa.me/?text=" + fullMsg;
 document.getElementById('share-sms').href = "sms:?&body=" + fullMsg;
 document.getElementById('share-mail').href =
-  "mailto:?subject=" + encodeURIComponent("Teste ton air intérieur en 2 min 🌿") +
+  "mailto:?subject=" + encodeURIComponent("Teste ton air intérieur en 2 min") +
   "&body=" + fullMsg;
 
 /* ==================================================================
