@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mon air intérieur · Êtes-vous sûr de bien respirer chez vous ?</title>
+<meta name="description" content="Test interactif et anonyme pour évaluer la qualité de l'air de votre logement en 2 minutes. Un outil proposé par la fondation Green-Got." />
+
+<!-- Police via Google Fonts : Manrope (sans-serif géométrique moderne) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================================================
+   CHARTE VISUELLE — variables CSS
+   ============================================================ */
+:root {
+  --lime: #b7f651;          /* vert-citron signature Green-Got */
+  --lime-dark: #9fe035;
+  --ink: #0B1A12;           /* noir profond (texte / fonds sombres) */
+  --ink-2: #0E1F16;
+  --cream: #F7F8F4;         /* blanc cassé (fonds clairs) */
+  --forest: #1C3B2A;        /* vert forêt (surfaces secondaires) */
+  --grey: #6B7A70;          /* gris doux (texte secondaire) */
+  --grey-light: #E4E9E2;
+  --white: #ffffff;
+
+  --radius-card: 24px;
+  --radius-soft: 16px;
+  --shadow-soft: 0 10px 40px rgba(11, 26, 18, 0.08);
+  --shadow-hover: 0 14px 50px rgba(11, 26, 18, 0.14);
+  --maxw: 720px;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: var(--ink);
+  background: var(--cream);
+  line-height: 1.55;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Fond organique : dégradés doux évoquant lumière naturelle */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(900px 600px at 85% -5%, rgba(183, 246, 81, 0.18), transparent 60%),
+    radial-gradient(700px 500px at -10% 110%, rgba(28, 59, 42, 0.10), transparent 55%);
+  pointer-events: none;
+}
+
+h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; margin: 0 0 0.4em; }
+h1 { font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 800; }
+h2 { font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 800; }
+h3 { font-size: 1.15rem; font-weight: 700; }
+p { margin: 0 0 1em; }
+a { color: inherit; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================================
+   BOUTONS
+   ============================================================ */
+.btn {
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 999px;            /* pilule full-rounded */
+  padding: 16px 32px;
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+.btn-primary {
+  background: var(--lime);
+  color: var(--ink);
+  box-shadow: 0 8px 24px rgba(183, 246, 81, 0.45);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(183, 246, 81, 0.55); background: var(--lime-dark); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+}
+.btn-secondary:hover { background: var(--ink); color: var(--cream); }
+
+.btn-ghost {
+  background: var(--white);
+  color: var(--ink);
+  border: 1.5px solid var(--grey-light);
+  box-shadow: var(--shadow-soft);
+}
+.btn-ghost:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+
+.btn-block { width: 100%; }
+
+/* ============================================================
+   ÉCRANS (transition fondu)
+   ============================================================ */
+.screen { display: none; animation: fadeUp .5s ease both; }
+.screen.active { display: flex; flex-direction: column; flex: 1; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   ÉCRAN 1 — ACCUEIL
+   ============================================================ */
+.hero { text-align: center; margin-top: 8px; }
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(28, 59, 42, 0.08);
+  color: var(--forest);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 8px 16px;
+  border-radius: 999px;
+  margin-bottom: 22px;
+}
+.hero .lead {
+  font-size: 1.15rem;
+  color: var(--grey);
+  max-width: 540px;
+  margin: 0 auto 28px;
+}
+.hero .lead strong { color: var(--ink); }
+
+/* Encadré positionnement honnête */
+.disclaimer-box {
+  background: var(--white);
+  border: 1.5px solid var(--grey-light);
+  border-left: 5px solid var(--lime);
+  border-radius: var(--radius-soft);
+  padding: 18px 20px;
+  text-align: left;
+  max-width: 560px;
+  margin: 0 auto 28px;
+  box-shadow: var(--shadow-soft);
+}
+.disclaimer-box p { margin: 0; font-size: 0.98rem; color: var(--ink); }
+.disclaimer-box .dt { font-weight: 700; display: block; margin-bottom: 4px; }
+
+.reassure {
+  font-size: 0.92rem;
+  color: var(--grey);
+  margin-top: 16px;
+}
+
+/* Blobs décoratifs organiques */
+.blob {
+  position: absolute;
+  border-radius: 50% 50% 48% 52% / 55% 48% 52% 45%;
+  filter: blur(2px);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+/* ============================================================
+   ÉCRAN 2 — QUESTIONNAIRE
+   ============================================================ */
+.progress-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--grey);
+}
+.progress-track {
+  height: 10px;
+  background: var(--grey-light);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--lime), var(--lime-dark));
+  border-radius: 999px;
+  transition: width .4s cubic-bezier(.4,0,.2,1);
+}
+
+.q-title { margin-bottom: 24px; }
+.q-hint { color: var(--grey); font-size: 0.95rem; margin-top: -16px; margin-bottom: 24px; }
+
+.options { display: flex; flex-direction: column; gap: 12px; }
+.opt {
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: left;
+  background: var(--white);
+  border: 2px solid var(--grey-light);
+  border-radius: var(--radius-soft);
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: all .16s ease;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--ink);
+}
+.opt:hover { border-color: var(--lime); transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+.opt:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+.opt .tick {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--grey-light);
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  transition: all .16s ease;
+}
+/* État sélectionné (utile pour choix multiple) */
+.opt.selected { border-color: var(--lime); background: rgba(183, 246, 81, 0.12); }
+.opt.selected .tick { background: var(--lime); border-color: var(--lime); }
+.opt.selected .tick::after { content: "✓"; font-size: 14px; color: var(--ink); font-weight: 800; }
+
+.q-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; gap: 12px; }
+.q-nav .btn-link {
+  background: none; border: none; color: var(--grey); font-family: inherit;
+  font-size: 1rem; font-weight: 600; cursor: pointer; padding: 10px 4px;
+}
+.q-nav .btn-link:hover { color: var(--ink); }
+.q-nav .btn-link[hidden] { visibility: hidden; }
+
+/* ============================================================
+   ÉCRAN 3 — CALCUL
+   ============================================================ */
+#screen-calc { justify-content: center; align-items: center; text-align: center; min-height: 70vh; }
+.spinner {
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  border: 6px solid var(--grey-light);
+  border-top-color: var(--lime);
+  animation: spin 0.9s linear infinite;
+  margin-bottom: 28px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.calc-text { font-size: 1.25rem; font-weight: 700; }
+.calc-sub { color: var(--grey); }
+
+/* ============================================================
+   ÉCRAN 4 — RAPPORT
+   ============================================================ */
+.report-head { text-align: center; margin-bottom: 8px; }
+
+/* Jauge circulaire */
+.gauge-wrap { display: flex; flex-direction: column; align-items: center; margin: 8px 0 28px; }
+.gauge { position: relative; width: 220px; height: 220px; }
+.gauge svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+.gauge .track { fill: none; stroke: var(--grey-light); stroke-width: 18; }
+.gauge .bar {
+  fill: none; stroke: var(--lime); stroke-width: 18; stroke-linecap: round;
+  transition: stroke-dashoffset 1.3s cubic-bezier(.4,0,.2,1);
+}
+.gauge .center {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.gauge .score-num { font-size: 3.4rem; font-weight: 800; line-height: 1; }
+.gauge .score-max { font-size: 1rem; color: var(--grey); font-weight: 600; }
+.tier-label {
+  display: inline-block;
+  font-weight: 800;
+  font-size: 1.25rem;
+  margin-top: 18px;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: rgba(183, 246, 81, 0.18);
+}
+.tier-phrase { color: var(--grey); max-width: 460px; margin: 12px auto 0; }
+
+/* Cartes & sections rapport */
+.section { margin-top: 36px; }
+.section > h2 { display: flex; align-items: center; gap: 10px; }
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius-soft);
+  padding: 20px 22px;
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 14px;
+  border: 1px solid var(--grey-light);
+}
+.card.positive { border-left: 5px solid var(--lime); }
+.card.priority { border-left: 5px solid var(--forest); }
+
+.card .fact { font-weight: 700; margin-bottom: 12px; font-size: 1.08rem; }
+.card .row { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+.card .row:last-child { margin-bottom: 0; }
+.card .row .ic { flex-shrink: 0; font-size: 1.05rem; line-height: 1.5; }
+.card .row .lbl { font-weight: 700; }
+.card .row .lbl-why { color: var(--forest); }
+
+/* Encart personne sensible */
+.sensitive-box {
+  background: var(--forest);
+  color: var(--cream);
+  border-radius: var(--radius-soft);
+  padding: 22px 24px;
+  margin-top: 24px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.sensitive-box .ic { font-size: 1.8rem; }
+.sensitive-box h3 { color: var(--lime); margin-bottom: 6px; }
+.sensitive-box p { margin: 0; }
+
+/* Réflexe n°1 — mis en avant */
+.hero-tip {
+  background: var(--ink);
+  color: var(--cream);
+  border-radius: var(--radius-card);
+  padding: 32px 28px;
+  margin-top: 36px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-tip::after {
+  content: "";
+  position: absolute;
+  width: 260px; height: 260px;
+  background: radial-gradient(circle, rgba(183,246,81,0.35), transparent 70%);
+  top: -80px; right: -80px;
+  border-radius: 50%;
+}
+.hero-tip .kicker { color: var(--lime); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: 0.82rem; }
+.hero-tip h2 { color: var(--white); margin: 8px 0; position: relative; }
+.hero-tip p { color: rgba(247,248,244,0.82); margin: 0; position: relative; }
+
+/* Bonus recherche */
+.research-note {
+  background: rgba(28, 59, 42, 0.06);
+  border: 1px dashed var(--forest);
+  border-radius: var(--radius-soft);
+  padding: 18px 20px;
+  margin-top: 24px;
+  font-size: 0.95rem;
+}
+.research-note .tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  background: var(--forest);
+  color: var(--cream);
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+.research-note p { margin: 0; color: var(--ink); }
+
+/* Zone de partage */
+.share-box {
+  background: var(--white);
+  border-radius: var(--radius-card);
+  padding: 28px 24px;
+  margin-top: 36px;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--grey-light);
+}
+.share-box h2 { margin-bottom: 6px; }
+.share-box .share-sub { color: var(--grey); margin-bottom: 20px; }
+.share-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+}
+.copy-toast {
+  margin-top: 14px;
+  font-weight: 700;
+  color: var(--forest);
+  height: 1.2em;
+}
+
+/* CTA marque */
+.brand-cta {
+  background: linear-gradient(135deg, var(--forest), var(--ink-2));
+  color: var(--cream);
+  border-radius: var(--radius-card);
+  padding: 32px 28px;
+  margin-top: 24px;
+  text-align: center;
+}
+.brand-cta h2 { color: var(--white); }
+.brand-cta p { color: rgba(247,248,244,0.82); max-width: 440px; margin: 0 auto 22px; }
+
+.restart-wrap { text-align: center; margin-top: 36px; }
+
+/* ============================================================
+   PIED DE PAGE
+   ============================================================ */
+footer {
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid var(--grey-light);
+  font-size: 0.85rem;
+  color: var(--grey);
+  text-align: center;
+}
+footer p { margin: 0 0 8px; }
+footer a { color: var(--forest); font-weight: 600; }
+footer .brand-line { font-weight: 700; color: var(--ink); margin-top: 12px; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 480px) {
+  body { font-size: 16px; }
+  .wrap { padding: 18px 16px 48px; }
+  .btn { width: 100%; }
+  .opt { font-size: 1rem; padding: 16px 18px; }
+  .gauge { width: 190px; height: 190px; }
+  .gauge .score-num { font-size: 3rem; }
+}
+
+/* Accessibilité : mouvement réduit */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .spinner { border-top-color: var(--lime); }
+}
+
+/* Lien d'évitement (accessibilité clavier) */
+.skip-link {
+  position: absolute; left: -999px; top: 0;
+  background: var(--ink); color: var(--cream);
+  padding: 10px 16px; border-radius: 0 0 8px 0; z-index: 100;
+}
+.skip-link:focus { left: 0; }
+</style>
+</head>
+
+<body>
+<a href="#main" class="skip-link">Aller au contenu</a>
+
+<div class="wrap">
+<main id="main">
+
+<!-- ====================================================== -->
+<!-- ÉCRAN 1 — ACCUEIL                                       -->
+<!-- ====================================================== -->
+<section id="screen-home" class="screen active" aria-labelledby="home-title">
+  <div class="hero">
+    <span class="badge">🌿 Fondation Green-Got · Santé environnementale</span>
+    <h1 id="home-title">Votre air intérieur est-il sain ?</h1>
+    <p class="lead">
+      On passe près de <strong>90 % de notre temps à l'intérieur</strong> — où l'air est souvent
+      plus pollué qu'à l'extérieur. En 2 minutes, découvrez ce que vous respirez chez vous.
+    </p>
+
+    <div class="disclaimer-box">
+      <p>
+        <span class="dt">Un point de départ, pas un verdict.</span>
+        Ce test est <strong>indicatif</strong> : il s'appuie sur vos habitudes pour vous orienter
+        vers les bons réflexes. Il ne remplace ni une mesure instrumentale de l'air,
+        ni un avis médical — il vous met simplement sur la bonne voie.
+      </p>
+    </div>
+
+    <button class="btn btn-primary" id="btn-start">Faire le test (2 min) →</button>
+    <p class="reassure">🔒 100 % anonyme · aucune donnée enregistrée</p>
+  </div>
+</section>
+
+<!-- ====================================================== -->
+<!-- ÉCRAN 2 — QUESTIONNAIRE                                 -->
+<!-- ====================================================== -->
+<section id="screen-quiz" class="screen" aria-labelledby="q-title" aria-live="polite">
+  <div class="progress-head">
+    <span id="progress-label">Question 1 / 16</span>
+    <span id="progress-pct">6 %</span>
+  </div>
+  <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progression du test">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+
+  <h2 class="q-title" id="q-title">…</h2>
+  <p class="q-hint" id="q-hint" hidden></p>
+
+  <div class="options" id="options" role="group" aria-labelledby="q-title"></div>
+
+  <div class="q-nav">
+    <button class="btn-link" id="btn-prev" type="button">← Précédent</button>
+    <!-- Bouton suivant : visible seulement pour les questions à choix multiple -->
+    <button class="btn btn-primary" id="btn-next" type="button" hidden>Continuer →</button>
+  </div>
+</section>
+
+<!-- ====================================================== -->
+<!-- ÉCRAN 3 — CALCUL                                        -->
+<!-- ====================================================== -->
+<section id="screen-calc" class="screen" aria-label="Analyse en cours">
+  <div class="spinner" aria-hidden="true"></div>
+  <p class="calc-text">Analyse de vos réponses…</p>
+  <p class="calc-sub">On prépare votre rapport personnalisé 🌿</p>
+</section>
+
+<!-- ====================================================== -->
+<!-- ÉCRAN 4 — RAPPORT                                       -->
+<!-- ====================================================== -->
+<section id="screen-report" class="screen" aria-labelledby="report-title">
+  <div class="report-head">
+    <h2 id="report-title">Votre rapport air intérieur</h2>
+  </div>
+
+  <!-- Jauge -->
+  <div class="gauge-wrap">
+    <div class="gauge">
+      <svg viewBox="0 0 200 200" aria-hidden="true">
+        <circle class="track" cx="100" cy="100" r="86" />
+        <circle class="bar" id="gauge-bar" cx="100" cy="100" r="86" />
+      </svg>
+      <div class="center">
+        <span class="score-num" id="score-num">0</span>
+        <span class="score-max">/ 100</span>
+      </div>
+    </div>
+    <span class="tier-label" id="tier-label">—</span>
+    <p class="tier-phrase" id="tier-phrase"></p>
+  </div>
+
+  <!-- Points forts -->
+  <div class="section" id="sec-strengths">
+    <h2>💪 Vos points forts</h2>
+    <div id="strengths-list"></div>
+  </div>
+
+  <!-- Encart personne sensible (injecté si activé) -->
+  <div id="sensitive-slot"></div>
+
+  <!-- Priorités -->
+  <div class="section" id="sec-priorities">
+    <h2>🎯 Vos priorités</h2>
+    <div id="priorities-list"></div>
+  </div>
+
+  <!-- Réflexe n°1 -->
+  <div class="hero-tip">
+    <span class="kicker">Le réflexe n°1</span>
+    <h2>Aérez 2 × 10 min par jour</h2>
+    <p>Même l'hiver. Ouvrir grand 10 minutes matin et soir renouvelle l'air sans refroidir les murs. C'est gratuit, c'est rapide, et c'est le geste le plus efficace de tous.</p>
+  </div>
+
+  <!-- Bonus recherche -->
+  <div class="research-note">
+    <span class="tag">Piste de recherche · pas une preuve</span>
+    <p>
+      À noter : la recherche explore aussi les liens entre la qualité de l'air intérieur et le
+      bien-être cognitif. Une vaste étude chez des personnes âgées a observé une association entre
+      une aération hivernale plus fréquente et un risque réduit de déclin cognitif. Il s'agit d'une
+      association, pas d'une preuve de cause à effet — mais une raison de plus d'ouvrir ses fenêtres.
+    </p>
+  </div>
+
+  <!-- Partage -->
+  <div class="share-box">
+    <h2>Partagez le test 🌿</h2>
+    <p class="share-sub">Vos proches respirent eux aussi chez eux. Offrez-leur 2 minutes de prise de conscience.</p>
+    <div class="share-grid">
+      <button class="btn btn-primary" id="btn-share">📲 Partager</button>
+      <a class="btn btn-ghost" id="share-wa" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn btn-ghost" id="share-sms">SMS</a>
+      <a class="btn btn-ghost" id="share-mail">Email</a>
+      <button class="btn btn-ghost" id="btn-copy">🔗 Copier le lien</button>
+    </div>
+    <p class="copy-toast" id="copy-toast" aria-live="polite"></p>
+  </div>
+
+  <!-- CTA marque -->
+  <div class="brand-cta">
+    <h2>Envie d'aller plus loin ?</h2>
+    <p>Green-Got est la néobanque qui met votre argent au service du climat et du vivant. Découvrez comment votre compte peut agir, lui aussi, pour un environnement plus sain.</p>
+    <a class="btn btn-primary" href="https://green-got.com/" target="_blank" rel="noopener">Découvrir Green-Got</a>
+  </div>
+
+  <div class="restart-wrap">
+    <button class="btn btn-secondary" id="btn-restart">↻ Refaire le test</button>
+  </div>
+</section>
+
+</main>
+
+<!-- ====================================================== -->
+<!-- PIED DE PAGE                                            -->
+<!-- ====================================================== -->
+<footer>
+  <p>Cet outil est informatif. Il s'appuie sur vos déclarations et ne remplace ni une mesure instrumentale de la qualité de l'air, ni un avis médical.</p>
+  <p>Pour le radon, consultez les ressources publiques officielles de votre région.</p>
+  <p class="brand-line">Un outil proposé par la fondation Green-Got pour la santé environnementale.</p>
+  <p>© <span id="year"></span> · <a href="https://green-got.com/" target="_blank" rel="noopener">green-got.com</a></p>
+</footer>
+
+</div>
+
+<script>
+/* ==================================================================
+   CONFIGURATION — QUESTIONS & LOGIQUE DE SCORE
+   ------------------------------------------------------------------
+   Tout le contenu modifiable est ici. Pour ajuster le test :
+   - QUESTIONS : ajouter/modifier les questions, options et signaux.
+   - WEIGHTS   : le barème de points par type de signal.
+   - TIERS     : les paliers de score et leurs phrases.
+   ------------------------------------------------------------------
+   Structure d'une question :
+     id        : identifiant unique
+     title     : intitulé affiché
+     hint      : sous-texte optionnel (ex. "plusieurs choix possibles")
+     multi     : true => choix multiple (sinon une seule réponse)
+     options   : [{ label, value, signal }]
+                 - signal (optionnel) : clé du signal déclenché par cette réponse
+     - Les options sont listées de la MEILLEURE à la PIRE.
+
+   Un "signal" déclenché ajoute :
+     - une pénalité (selon SIGNALS[clé].weight)
+     - un texte de conseil dans le rapport (SIGNALS[clé].report)
+   ================================================================== */
+
+/* Barème de points retirés par catégorie de signal */
+var WEIGHTS = {
+  strong: 15,   // signaux forts
+  medium: 8,    // signaux moyens
+  context: 5,   // signaux contextuels
+  aggrav: 4     // aggravants
+};
+
+/* ------------------------------------------------------------------
+   SIGNALS : catalogue de tous les signaux possibles.
+   - cat    : catégorie (détermine le poids)
+   - report : { fact, why, action } — texte affiché dans le rapport
+   - priority : poids d'affichage pour le classement des "3 priorités"
+   ------------------------------------------------------------------ */
+var SIGNALS = {
+  ventilation: {
+    cat: 'strong',
+    report: {
+      fact: "Votre logement n'a pas de renouvellement d'air identifié.",
+      why: "C'est le point le plus important de votre diagnostic : sans renouvellement d'air régulier, tout le reste s'accumule.",
+      action: "Le geste le plus efficace est gratuit — on y vient juste après : ouvrir grand les fenêtres, tous les jours."
+    }
+  },
+  aeration_hiver: {
+    cat: 'strong',
+    report: {
+      fact: "Vous aérez rarement, surtout l'hiver.",
+      why: "En hiver, on garde tout fermé pour la chaleur — et l'air intérieur se charge.",
+      action: "Le bon réflexe : ouvrir en grand 2 fois 10 minutes par jour. C'est court, ça ne refroidit pas les murs, et ça change tout."
+    }
+  },
+  tabac: {
+    cat: 'strong',
+    report: {
+      fact: "On fume à l'intérieur du logement.",
+      why: "Fumer à l'intérieur est l'une des sources de pollution les plus directes pour l'air du logement, et elle s'accroche aux surfaces longtemps après.",
+      action: "Fumer dehors change radicalement la qualité de l'air, surtout s'il y a des enfants."
+    }
+  },
+  chambre_jamais: {
+    cat: 'strong',
+    report: {
+      fact: "Votre chambre n'est quasiment jamais aérée.",
+      why: "Vous passez environ un tiers de votre temps dans votre chambre, sans la renouveler.",
+      action: "Ouvrir grand 10 minutes chaque matin évacue l'air vicié de la nuit — beaucoup de gens disent mieux dormir ensuite."
+    }
+  },
+  radon: {
+    cat: 'strong',
+    report: {
+      fact: "Le radon de votre logement n'a jamais été évalué.",
+      why: "Le radon est un gaz naturel, invisible et inodore, qui peut s'accumuler dans les logements — c'est l'un des risques de l'air intérieur qu'aucune habitude ne permet de \"sentir\".",
+      action: "Selon les régions, il mérite un test simple (kit peu coûteux). Aérer et ventiler aide aussi à réduire sa concentration. Renseignez-vous sur le niveau de risque de votre commune via les ressources publiques officielles."
+    }
+  },
+  cuisine_douche: {
+    cat: 'medium',
+    report: {
+      fact: "Vous n'aérez pas pendant la cuisine et la douche.",
+      why: "Cuisiner et se doucher libèrent particules et humidité, pile dans les pièces où l'on reste.",
+      action: "Allumer la hotte ou entrouvrir la fenêtre à ces moments-là suffit à évacuer le plus gros."
+    }
+  },
+  mobilier: {
+    cat: 'medium',
+    report: {
+      fact: "Vous avez du mobilier neuf ou repeint récemment.",
+      why: "Cette odeur de neuf, ce sont des composés volatils qui s'évaporent pendant plusieurs semaines.",
+      action: "Aérez davantage la pièce concernée pour le moment — c'est temporaire, et l'aération accélère nettement le retour à la normale."
+    }
+  },
+  humidite: {
+    cat: 'medium',
+    report: {
+      fact: "Vous observez souvent condensation ou odeurs d'humidité.",
+      why: "La condensation et les odeurs d'humidité signalent un excès d'eau dans l'air, terrain idéal pour les moisissures.",
+      action: "Viser une humidité autour de 30-60 % et aérer après douche et cuisson limite le problème à la source."
+    }
+  },
+  chambre_fermee: {
+    cat: 'medium',
+    report: {
+      fact: "Vous dormez dans une pièce fermée sans ventilation.",
+      why: "Une chambre totalement fermée la nuit concentre l'humidité et l'air vicié.",
+      action: "Laisser la porte entrouverte ou aérer juste avant de dormir suffit à améliorer nettement la situation."
+    }
+  },
+  bougies: {
+    cat: 'context',
+    report: {
+      fact: "Vous utilisez régulièrement bougies, encens ou diffuseurs.",
+      why: "Bougies, encens et diffuseurs sentent bon, mais leur combustion libère de fines particules.",
+      action: "Pas besoin d'arrêter : l'essentiel est d'aérer pendant et après, surtout en pièce fermée. L'encens est le plus chargé — réservez-le aux moments où vous pouvez ouvrir une fenêtre."
+    }
+  },
+  produits: {
+    cat: 'context',
+    report: {
+      fact: "Vous utilisez surtout des produits ménagers parfumés ou en spray.",
+      why: "Les produits ménagers parfumés et en spray diffusent des composés volatils dans l'air que vous respirez en faisant le ménage.",
+      action: "Le réflexe simple : ouvrir une fenêtre pendant que vous nettoyez. Les produits basiques (vinaigre, savon noir) font le travail avec moins d'émissions."
+    }
+  },
+  linge: {
+    cat: 'context',
+    report: {
+      fact: "Vous faites sécher le linge à l'intérieur sans ventilation.",
+      why: "Le linge qui sèche relâche beaucoup d'eau dans l'air.",
+      action: "Si c'est dans une pièce fermée, entrouvrez une fenêtre le temps du séchage — un petit geste contre l'humidité et les moisissures."
+    }
+  },
+  animaux: {
+    cat: 'context',
+    report: {
+      fact: "Vos animaux ajoutent des allergènes dans l'air.",
+      why: "Une personne sensible vit chez vous : les allergènes des animaux comptent alors davantage.",
+      action: "Mieux vaut garder l'animal hors de sa chambre et entretenir régulièrement les textiles (literie, tapis, canapé)."
+    }
+  },
+  /* Aggravants : activés par combinaison (gérés dans computeScore) */
+  aggrav_volume: {
+    cat: 'aggrav',
+    report: {
+      fact: "Petit volume combiné à une aération faible.",
+      why: "Dans un studio, l'air se charge vite — et sans renouvellement régulier, les polluants restent concentrés.",
+      action: "Bonne nouvelle : quelques minutes d'aération suffisent à faire la différence dans un petit espace."
+    }
+  },
+  aggrav_etanche: {
+    cat: 'aggrav',
+    report: {
+      fact: "Logement récent/étanche combiné à une ventilation faible.",
+      why: "Un logement bien isolé retient aussi mieux les polluants. Isolation et bonne ventilation vont de pair.",
+      action: "Veillez à ce que votre VMC fonctionne, ou aérez manuellement plusieurs fois par jour."
+    }
+  }
+};
+
+/* ------------------------------------------------------------------
+   POSITIFS : messages "points forts" affichés quand une question
+   a reçu une bonne réponse (la valeur "good" de la question).
+   ------------------------------------------------------------------ */
+var STRENGTHS = {
+  ventilation: "Votre logement dispose d'un vrai renouvellement d'air — la base la plus importante est posée. 👏",
+  aeration:    "Vous aérez régulièrement, même quand il fait froid : excellent réflexe.",
+  cuisine:     "Vous aérez pendant cuisine et douche : vous évacuez l'humidité au bon moment.",
+  tabac:       "Pas de fumée à l'intérieur : votre air en sort grandement préservé.",
+  chambre:     "Vous aérez votre chambre chaque jour : un sommeil dans un air plus sain.",
+  humidite:    "Pas d'humidité visible : un bon signe contre les moisissures.",
+  radon:       "Vous avez la question du radon en tête : peu de gens y pensent, bravo.",
+  produits:    "Vous privilégiez des produits d'entretien simples : moins d'émissions dans l'air."
+};
+
+/* ------------------------------------------------------------------
+   QUESTIONS — le contenu intégral (16 questions)
+   ------------------------------------------------------------------ */
+var QUESTIONS = [
+  {
+    id: 'logement',
+    title: "Quel type de logement habitez-vous ?",
+    options: [
+      { label: "🏡 Maison", value: 'maison' },
+      { label: "🏢 Appartement", value: 'appart' },
+      { label: "🛏️ Studio", value: 'studio' },           // aggravant possible
+      { label: "🏘️ Autre", value: 'autre' }
+    ]
+  },
+  {
+    id: 'date',
+    title: "De quand date votre logement (ou sa dernière grosse rénovation) ?",
+    options: [
+      { label: "Avant 1990", value: 'avant90' },
+      { label: "Entre 1990 et 2010", value: '90_2010' },
+      { label: "Après 2010", value: 'apres2010' },          // aggravant possible (étanche)
+      { label: "Rénové récemment", value: 'renove' }         // aggravant possible (étanche)
+    ]
+  },
+  {
+    id: 'renouvellement',
+    title: "Comment l'air se renouvelle-t-il chez vous ?",
+    options: [
+      { label: "💨 VMC (ventilation mécanique)", value: 'vmc', good: 'ventilation' },
+      { label: "🪟 Grilles d'aération aux fenêtres", value: 'grilles', good: 'ventilation' },
+      { label: "🤷 Aucun système, j'ouvre les fenêtres", value: 'aucun', signal: 'ventilation' },
+      { label: "❓ Je ne sais pas", value: 'inconnu', signal: 'ventilation' }
+    ]
+  },
+  {
+    id: 'aeration',
+    title: "À quelle fréquence aérez-vous en ouvrant grand les fenêtres ?",
+    options: [
+      { label: "🌬️ Plusieurs fois par jour", value: 'souvent', good: 'aeration' },
+      { label: "☀️ Une fois par jour", value: 'quotidien', good: 'aeration' },
+      { label: "📅 Quelques fois par semaine", value: 'semaine' },
+      { label: "❄️ Rarement, surtout l'hiver", value: 'rare', signal: 'aeration_hiver' }
+    ]
+  },
+  {
+    id: 'cuisine',
+    title: "Aérez-vous pendant et après la cuisine et la douche ?",
+    options: [
+      { label: "✅ Toujours", value: 'toujours', good: 'cuisine' },
+      { label: "🔸 Parfois", value: 'parfois' },
+      { label: "❌ Jamais", value: 'jamais', signal: 'cuisine_douche' }
+    ]
+  },
+  {
+    id: 'bougies',
+    title: "Utilisez-vous bougies parfumées, encens ou diffuseurs/sprays d'intérieur ?",
+    options: [
+      { label: "Jamais", value: 'jamais' },
+      { label: "De temps en temps", value: 'parfois' },
+      { label: "Régulièrement", value: 'souvent', signal: 'bougies' }
+    ]
+  },
+  {
+    id: 'produits',
+    title: "Quels produits d'entretien utilisez-vous le plus souvent ?",
+    options: [
+      { label: "🌱 Produits simples (vinaigre, savon noir)", value: 'simples', good: 'produits' },
+      { label: "🤷 Je ne fais pas attention", value: 'aucune_attention' },
+      { label: "🧴 Sprays multi-usages", value: 'sprays', signal: 'produits' },
+      { label: "🌸 Classiques parfumés", value: 'parfumes', signal: 'produits' }
+    ]
+  },
+  {
+    id: 'mobilier',
+    title: "Avez-vous des meubles neufs, de la literie neuve ou repeint récemment (moins de 6 mois) ?",
+    options: [
+      { label: "Non", value: 'non' },
+      { label: "Il y a 6-12 mois", value: '6_12' },
+      { label: "Oui, récemment", value: 'oui', signal: 'mobilier' }
+    ]
+  },
+  {
+    id: 'tabac',
+    title: "Quelqu'un fume-t-il à l'intérieur du logement (y compris vape) ?",
+    options: [
+      { label: "🚭 Non", value: 'non', good: 'tabac' },
+      { label: "🌿 Sur le balcon ou dehors", value: 'dehors', good: 'tabac' },
+      { label: "🚬 Oui", value: 'oui', signal: 'tabac' }
+    ]
+  },
+  {
+    id: 'humidite',
+    title: "Voyez-vous de la condensation sur les fenêtres, des traces ou des odeurs d'humidité ?",
+    options: [
+      { label: "Jamais", value: 'jamais', good: 'humidite' },
+      { label: "Parfois", value: 'parfois' },
+      { label: "Souvent", value: 'souvent', signal: 'humidite' }
+    ]
+  },
+  {
+    id: 'linge',
+    title: "Faites-vous sécher votre linge à l'intérieur sans ventilation ?",
+    options: [
+      { label: "Non", value: 'non' },
+      { label: "Parfois", value: 'parfois' },
+      { label: "Oui, régulièrement", value: 'oui', signal: 'linge' }
+    ]
+  },
+  {
+    id: 'radon',
+    title: "Connaissez-vous le niveau de radon de votre région, et votre logement a-t-il été testé ?",
+    options: [
+      { label: "✅ Testé (niveau connu / maîtrisé)", value: 'teste', good: 'radon' },
+      { label: "🟢 Je vis en zone à faible risque", value: 'faible_risque', good: 'radon' },
+      { label: "❌ Jamais testé", value: 'jamais', signal: 'radon' },
+      { label: "❓ Je ne sais pas ce qu'est le radon", value: 'inconnu', signal: 'radon' }
+    ]
+  },
+  {
+    id: 'occupants',
+    title: "Qui vit dans le logement ?",
+    hint: "Plusieurs choix possibles.",
+    multi: true,
+    options: [
+      { label: "👶 Bébé / enfants en bas âge", value: 'enfants', sensitive: true },
+      { label: "🫁 Personne asthmatique ou allergique", value: 'asthme', sensitive: true },
+      { label: "👵 Personne âgée", value: 'agee', sensitive: true },
+      { label: "🧑 Adultes sans sensibilité particulière", value: 'adultes' }
+    ]
+  },
+  {
+    id: 'animaux',
+    title: "Avez-vous des animaux domestiques à l'intérieur ?",
+    options: [
+      { label: "Non", value: 'non' },
+      { label: "Oui", value: 'oui', signalIfSensitive: 'animaux' }   // signal seulement si personne sensible
+    ]
+  },
+  {
+    id: 'chambre',
+    title: "Aérez-vous votre chambre chaque jour ?",
+    options: [
+      { label: "☀️ Oui, tous les matins", value: 'matin', good: 'chambre' },
+      { label: "🔸 Parfois", value: 'parfois' },
+      { label: "❌ Quasiment jamais", value: 'jamais', signal: 'chambre_jamais' }
+    ]
+  },
+  {
+    id: 'nuit',
+    title: "Dormez-vous portes et fenêtres fermées dans une pièce sans ventilation ?",
+    options: [
+      { label: "💨 Il y a une ventilation", value: 'ventilation' },
+      { label: "🚪 La porte reste ouverte", value: 'porte_ouverte' },
+      { label: "🔒 Oui, tout fermé", value: 'ferme', signal: 'chambre_fermee' }
+    ]
+  }
+];
+
+/* ------------------------------------------------------------------
+   PALIERS de score
+   ------------------------------------------------------------------ */
+var TIERS = [
+  { min: 85, label: "Très bon",    phrase: "Votre air intérieur est sur de très bonnes bases." },
+  { min: 70, label: "Bon",         phrase: "Bonne base, quelques réglages faciles à gagner." },
+  { min: 50, label: "Correct",     phrase: "Plusieurs leviers simples peuvent nettement améliorer la situation." },
+  { min: 0,  label: "À surveiller", phrase: "Quelques gestes gratuits feront une vraie différence — commençons par les plus efficaces." }
+];
+
+/* ==================================================================
+   ÉTAT (en mémoire uniquement — aucun stockage navigateur)
+   ================================================================== */
+var state = {
+  current: 0,            // index de la question affichée
+  answers: {}            // { questionId: value | [values] }
+};
+
+/* ==================================================================
+   NAVIGATION ENTRE ÉCRANS
+   ================================================================== */
+var screens = {
+  home:   document.getElementById('screen-home'),
+  quiz:   document.getElementById('screen-quiz'),
+  calc:   document.getElementById('screen-calc'),
+  report: document.getElementById('screen-report')
+};
+
+function showScreen(name) {
+  Object.keys(screens).forEach(function (k) {
+    screens[k].classList.toggle('active', k === name);
+  });
+  window.scrollTo({ top: 0, behavior: 'auto' });
+}
+
+/* ==================================================================
+   QUESTIONNAIRE — rendu
+   ================================================================== */
+var elOptions   = document.getElementById('options');
+var elQTitle    = document.getElementById('q-title');
+var elQHint     = document.getElementById('q-hint');
+var elProgLabel = document.getElementById('progress-label');
+var elProgPct   = document.getElementById('progress-pct');
+var elProgFill  = document.getElementById('progress-fill');
+var elProgBar   = document.querySelector('.progress-track');
+var btnPrev     = document.getElementById('btn-prev');
+var btnNext     = document.getElementById('btn-next');
+
+function renderQuestion() {
+  var q = QUESTIONS[state.current];
+  var total = QUESTIONS.length;
+
+  // Barre de progression
+  var pct = Math.round(((state.current) / total) * 100);
+  elProgLabel.textContent = "Question " + (state.current + 1) + " / " + total;
+  elProgPct.textContent = pct + " %";
+  elProgFill.style.width = pct + "%";
+  elProgBar.setAttribute('aria-valuenow', String(pct));
+
+  // Titre + indice
+  elQTitle.textContent = q.title;
+  if (q.hint) { elQHint.textContent = q.hint; elQHint.hidden = false; }
+  else { elQHint.hidden = true; }
+
+  // Bouton précédent
+  btnPrev.hidden = (state.current === 0);
+
+  // Bouton suivant : seulement pour les questions à choix multiple
+  btnNext.hidden = !q.multi;
+
+  // Options
+  elOptions.innerHTML = '';
+  var selected = state.answers[q.id];
+
+  q.options.forEach(function (opt) {
+    var btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.type = 'button';
+    btn.setAttribute('role', q.multi ? 'checkbox' : 'radio');
+
+    var isSel = q.multi
+      ? (Array.isArray(selected) && selected.indexOf(opt.value) !== -1)
+      : (selected === opt.value);
+    if (isSel) btn.classList.add('selected');
+    btn.setAttribute('aria-checked', isSel ? 'true' : 'false');
+    btn.setAttribute('aria-label', opt.label);
+
+    btn.innerHTML = '<span class="tick" aria-hidden="true"></span><span>' + opt.label + '</span>';
+
+    btn.addEventListener('click', function () { selectOption(q, opt, btn); });
+    elOptions.appendChild(btn);
+  });
+}
+
+function selectOption(q, opt, btn) {
+  if (q.multi) {
+    // Choix multiple : on bascule la sélection, on attend "Continuer"
+    var arr = Array.isArray(state.answers[q.id]) ? state.answers[q.id].slice() : [];
+    var i = arr.indexOf(opt.value);
+    if (i === -1) arr.push(opt.value); else arr.splice(i, 1);
+    state.answers[q.id] = arr;
+    btn.classList.toggle('selected');
+    var nowSel = btn.classList.contains('selected');
+    btn.setAttribute('aria-checked', nowSel ? 'true' : 'false');
+  } else {
+    // Choix unique : on enregistre et on avance automatiquement
+    state.answers[q.id] = opt.value;
+    // Petit délai pour le feedback visuel
+    var opts = elOptions.querySelectorAll('.opt');
+    opts.forEach(function (o) { o.classList.remove('selected'); o.setAttribute('aria-checked','false'); });
+    btn.classList.add('selected');
+    btn.setAttribute('aria-checked', 'true');
+    setTimeout(goNext, 220);
+  }
+}
+
+function goNext() {
+  if (state.current < QUESTIONS.length - 1) {
+    state.current++;
+    renderQuestion();
+  } else {
+    runCalc();
+  }
+}
+
+function goPrev() {
+  if (state.current > 0) {
+    state.current--;
+    renderQuestion();
+  }
+}
+
+btnPrev.addEventListener('click', goPrev);
+btnNext.addEventListener('click', goNext);
+
+/* ==================================================================
+   CALCUL DU SCORE
+   ================================================================== */
+function hasSensitivePerson() {
+  var occ = state.answers['occupants'];
+  if (!Array.isArray(occ)) return false;
+  return occ.indexOf('enfants') !== -1 || occ.indexOf('asthme') !== -1 || occ.indexOf('agee') !== -1;
+}
+
+function computeScore() {
+  var score = 100;
+  var activated = [];   // clés de signaux activés
+  var strengths = [];   // clés "good" déclenchées
+  var sensitive = hasSensitivePerson();
+
+  // 1) Parcours des réponses : signaux + points forts
+  QUESTIONS.forEach(function (q) {
+    var ans = state.answers[q.id];
+    if (ans === undefined) return;
+
+    q.options.forEach(function (opt) {
+      var chosen = q.multi
+        ? (Array.isArray(ans) && ans.indexOf(opt.value) !== -1)
+        : (ans === opt.value);
+      if (!chosen) return;
+
+      // Signal direct
+      if (opt.signal) addSignal(opt.signal);
+
+      // Signal conditionnel (animaux si personne sensible)
+      if (opt.signalIfSensitive && sensitive) addSignal(opt.signalIfSensitive);
+
+      // Point fort
+      if (opt.good && strengths.indexOf(opt.good) === -1) strengths.push(opt.good);
+    });
+  });
+
+  function addSignal(key) {
+    if (activated.indexOf(key) === -1) {
+      activated.push(key);
+      score -= WEIGHTS[SIGNALS[key].cat];
+    }
+  }
+
+  // 2) Aggravants (combinaisons)
+  var ventFaible = activated.indexOf('ventilation') !== -1 || activated.indexOf('aeration_hiver') !== -1;
+  // Studio + aération faible
+  if (state.answers['logement'] === 'studio' && ventFaible) {
+    addSignal('aggrav_volume');
+  }
+  // Logement récent/étanche + ventilation faible
+  var recent = state.answers['date'] === 'apres2010' || state.answers['date'] === 'renove';
+  if (recent && ventFaible) {
+    addSignal('aggrav_etanche');
+  }
+
+  // 3) Plancher à 0
+  if (score < 0) score = 0;
+
+  return { score: score, activated: activated, strengths: strengths, sensitive: sensitive };
+}
+
+function getTier(score) {
+  for (var i = 0; i < TIERS.length; i++) {
+    if (score >= TIERS[i].min) return TIERS[i];
+  }
+  return TIERS[TIERS.length - 1];
+}
+
+/* ==================================================================
+   ÉCRAN CALCUL puis RAPPORT
+   ================================================================== */
+function runCalc() {
+  showScreen('calc');
+  elProgFill.style.width = '100%';
+
+  // Respecte prefers-reduced-motion : délai minimal si activé
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var delay = reduce ? 300 : 1600;
+  setTimeout(buildReport, delay);
+}
+
+/* Ordre de priorité d'affichage : forts > moyens > contextuels > aggravants */
+var CAT_ORDER = { strong: 0, medium: 1, context: 2, aggrav: 3 };
+
+function buildReport() {
+  var result = computeScore();
+  renderGauge(result.score);
+
+  // ---- Points forts ----
+  var strEl = document.getElementById('strengths-list');
+  strEl.innerHTML = '';
+  var strengthsToShow = result.strengths.slice(0, 3);
+  if (strengthsToShow.length === 0) {
+    // Toujours commencer par du positif, même si peu de "good" : message d'encouragement
+    strengthsToShow = ['_default'];
+    STRENGTHS._default = "Vous avez pris le temps de faire ce test : c'est déjà le premier pas vers un air plus sain chez vous. 🌿";
+  }
+  strengthsToShow.forEach(function (key) {
+    var card = document.createElement('div');
+    card.className = 'card positive';
+    card.innerHTML = '<div class="row"><span class="ic">✅</span><span>' + STRENGTHS[key] + '</span></div>';
+    strEl.appendChild(card);
+  });
+
+  // ---- Encart personne sensible ----
+  var sensSlot = document.getElementById('sensitive-slot');
+  sensSlot.innerHTML = '';
+  if (result.sensitive) {
+    var box = document.createElement('div');
+    box.className = 'sensitive-box';
+    box.innerHTML =
+      '<span class="ic" aria-hidden="true">💚</span>' +
+      '<div><h3>Une attention particulière</h3>' +
+      '<p>Une personne plus sensible vit chez vous : enfant, personne asthmatique ou âgée. ' +
+      'Les gestes ci-dessous comptent encore plus pour elle, en particulier dans sa chambre.</p></div>';
+    sensSlot.appendChild(box);
+  }
+
+  // ---- Priorités (signaux triés) ----
+  var prioEl = document.getElementById('priorities-list');
+  prioEl.innerHTML = '';
+
+  // Tri : si personne sensible, on remonte les conseils "santé" en tête (déjà gérés par poids fort).
+  var sorted = result.activated.slice().sort(function (a, b) {
+    return CAT_ORDER[SIGNALS[a].cat] - CAT_ORDER[SIGNALS[b].cat];
+  });
+
+  var secPrio = document.getElementById('sec-priorities');
+  if (sorted.length === 0) {
+    secPrio.querySelector('h2').textContent = "🎯 Rien d'urgent à signaler";
+    var ok = document.createElement('div');
+    ok.className = 'card priority';
+    ok.innerHTML = '<div class="fact">Vos habitudes sont déjà très saines.</div>' +
+      '<div class="row"><span class="ic">🌿</span><span>Continuez ainsi, et gardez le réflexe d\'aération quotidien ci-dessous.</span></div>';
+    prioEl.appendChild(ok);
+  } else {
+    secPrio.querySelector('h2').textContent = "🎯 Vos " + Math.min(3, sorted.length) + " priorités";
+    sorted.slice(0, 3).forEach(function (key) {
+      var r = SIGNALS[key].report;
+      var card = document.createElement('div');
+      card.className = 'card priority';
+      card.innerHTML =
+        '<div class="fact">' + r.fact + '</div>' +
+        '<div class="row"><span class="ic">💡</span><span><span class="lbl lbl-why">Pourquoi ça compte : </span>' + r.why + '</span></div>' +
+        '<div class="row"><span class="ic">✅</span><span><span class="lbl">Ce que vous pouvez faire (gratuit) : </span>' + r.action + '</span></div>';
+      prioEl.appendChild(card);
+    });
+  }
+
+  showScreen('report');
+}
+
+/* Jauge circulaire animée */
+function renderGauge(score) {
+  var bar = document.getElementById('gauge-bar');
+  var num = document.getElementById('score-num');
+  var r = 86;
+  var circ = 2 * Math.PI * r;
+  bar.style.strokeDasharray = circ;
+  bar.style.strokeDashoffset = circ; // départ vide
+
+  // Palier
+  var tier = getTier(score);
+  document.getElementById('tier-label').textContent = tier.label;
+  document.getElementById('tier-phrase').textContent = tier.phrase;
+
+  // Couleur de la jauge selon palier (toujours dans la gamme verte, jamais alarmiste)
+  var color = score >= 70 ? '#b7f651' : (score >= 50 ? '#86c83f' : '#5a9e3a');
+  bar.style.stroke = color;
+  document.querySelector('.tier-label').style.background = 'rgba(183,246,81,0.18)';
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Animation du remplissage + comptage
+  requestAnimationFrame(function () {
+    setTimeout(function () {
+      bar.style.strokeDashoffset = circ * (1 - score / 100);
+    }, 60);
+  });
+
+  if (reduce) {
+    num.textContent = score;
+  } else {
+    var start = 0;
+    var dur = 1200;
+    var t0 = null;
+    function step(ts) {
+      if (t0 === null) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      num.textContent = Math.round(eased * score);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+}
+
+/* ==================================================================
+   PARTAGE
+   ================================================================== */
+var SHARE_URL = window.location.href.split('#')[0];
+var SHARE_MSG = "J'ai testé la qualité de l'air de chez moi, regarde 🌿";
+
+document.getElementById('btn-share').addEventListener('click', function () {
+  if (navigator.share) {
+    navigator.share({
+      title: "Mon air intérieur",
+      text: SHARE_MSG,
+      url: SHARE_URL
+    }).catch(function () { /* annulé : on ignore */ });
+  } else {
+    copyLink();
+  }
+});
+
+document.getElementById('btn-copy').addEventListener('click', copyLink);
+
+function copyLink() {
+  var toast = document.getElementById('copy-toast');
+  var done = function () { toast.textContent = "✅ Lien copié !"; setTimeout(function(){ toast.textContent=''; }, 2500); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(SHARE_URL).then(done).catch(fallbackCopy);
+  } else {
+    fallbackCopy();
+  }
+  function fallbackCopy() {
+    var ta = document.createElement('textarea');
+    ta.value = SHARE_URL; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) { toast.textContent = SHARE_URL; }
+    document.body.removeChild(ta);
+  }
+}
+
+// Liens pré-remplis
+var fullMsg = encodeURIComponent(SHARE_MSG + " " + SHARE_URL);
+document.getElementById('share-wa').href = "https://wa.me/?text=" + fullMsg;
+document.getElementById('share-sms').href = "sms:?&body=" + fullMsg;
+document.getElementById('share-mail').href =
+  "mailto:?subject=" + encodeURIComponent("Teste la qualité de ton air intérieur 🌿") +
+  "&body=" + fullMsg;
+
+/* ==================================================================
+   DÉMARRAGE & RESET
+   ================================================================== */
+document.getElementById('btn-start').addEventListener('click', function () {
+  showScreen('quiz');
+  renderQuestion();
+});
+
+document.getElementById('btn-restart').addEventListener('click', function () {
+  state.current = 0;
+  state.answers = {};
+  showScreen('home');
+});
+
+// Année dans le pied de page (sans Date.now interdit ? non : new Date() autorisé dans navigateur)
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
