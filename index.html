@@ -357,6 +357,51 @@ strong { color: var(--text); }
 }
 .cite:hover { border-color: var(--lime); }
 
+/* ============================================================
+   ENCART PARTENAIRE — "Coup de pouce Premium"
+   Visuellement SECONDAIRE : plus petit, fond lime très léger,
+   bordure gauche fine. Arrive APRÈS le conseil, jamais en pub
+   frontale. Contraste AA conservé.
+   ============================================================ */
+.partner-tip {
+  margin-top: 14px;
+  background: rgba(183, 246, 81, 0.05);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--lime);
+  border-radius: 12px;
+  padding: 13px 16px;
+  font-size: 0.9rem;
+}
+.partner-tip .pt-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.68rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--lime); margin-bottom: 6px;
+}
+.partner-tip .pt-body { margin: 0; color: var(--muted); line-height: 1.5; }
+.partner-tip .pt-body strong { color: var(--text); }
+.partner-tip .pt-adv { color: var(--lime); font-weight: 800; white-space: nowrap; }
+.partner-tip a.pt-link { font-weight: 700; white-space: nowrap; }
+.partner-tip .pt-note {
+  display: block; margin-top: 7px;
+  font-size: 0.74rem; line-height: 1.4; color: var(--muted);
+}
+
+/* Bloc-pont "cercle vertueux" (offre Premium + lien vers la Fondation) */
+.premium-bridge {
+  background: var(--surface-solid);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--lime);
+  border-radius: var(--radius-card);
+  padding: 26px 24px;
+}
+.premium-bridge .kicker {
+  color: var(--lime); font-weight: 800; text-transform: uppercase;
+  letter-spacing: .08em; font-size: 0.8rem;
+}
+.premium-bridge h2 { margin: 8px 0 10px; }
+.premium-bridge .bridge { color: var(--muted); max-width: 600px; }
+.premium-bridge .cta-duo { margin-top: 18px; justify-content: flex-start; }
+
 /* Encart personne sensible */
 .sensitive-box {
   background: var(--forest); color: var(--text);
@@ -749,6 +794,17 @@ footer .brand-line { font-weight: 800; color: var(--text); margin-top: 12px; }
           éliminer les PFAS du corps — mais réduire l'exposition reste utile.</p>
           <p><strong>Plus vulnérables :</strong> femmes enceintes ou allaitantes, nourrissons, travailleurs exposés,
           habitants de zones contaminées.</p>
+
+          <div class="partner-tip">
+            <span class="pt-label"><span aria-hidden="true">👶</span> Coup de pouce Premium</span>
+            <p class="pt-body">
+              Les PFAS et substances controversées se logent aussi dans certains cosmétiques longue tenue et produits bébé.
+              Pour les plus sensibles, <strong>Joone</strong> propose couches françaises et soins bio ; avec la carte Premium Green-Got,
+              <span class="pt-adv">11 % de vos commandes</span> sont reversés sur votre compte.
+              <a class="pt-link" href="https://green-got.com/" target="_blank" rel="noopener">En savoir plus ↗</a>
+              <span class="pt-note">Offre Premium 2025, susceptible d'évoluer. Cashback limité à 1 transaction remboursée par mois et par membre, pendant les 12 mois suivant le 1ᵉʳ achat.</span>
+            </p>
+          </div>
           <p>Références institutionnelles : <a href="#ref-9" >ministère de la Santé [9]</a>,
           Anses (valeurs guides sanitaires) et INERIS (expertise).</p>
         </div>
@@ -767,6 +823,18 @@ footer .brand-line { font-weight: 800; color: var(--text); margin-top: 12px; }
             <li><strong>Aérez et dépoussiérez régulièrement</strong> — les PFAS se logent dans la poussière domestique. C'est le lien direct avec votre air intérieur.</li>
             <li><strong>Renseignez-vous sur l'eau locale</strong> : la France publie une cartographie nationale. La limite de qualité est fixée à <strong>0,1 µg/L pour la somme de 20 PFAS</strong> ; le contrôle sanitaire est obligatoire dans l'eau potable depuis le 1ᵉʳ janvier 2026 — la France l'applique par anticipation depuis 2023, avant l'échéance européenne du 12 janvier 2026 (directive UE 2020/2184) <a href="#ref-10">[10]</a>.</li>
           </ol>
+
+          <div class="partner-tip">
+            <span class="pt-label"><span aria-hidden="true">🛒</span> Coup de pouce Premium</span>
+            <p class="pt-body">
+              Manger bio, de saison et moins transformé, c'est aussi réduire son exposition aux pesticides et aux PFAS.
+              Avec la carte Premium Green-Got, <strong>Biocoop</strong> vous reverse <span class="pt-adv">4 % de vos achats</span> sur votre compte,
+              sans points ni conditions cachées. Pas de magasin près de chez vous ? <strong>La Fourche</strong> (bio en ligne) offre
+              <span class="pt-adv">−50 % sur l'adhésion pendant 2 ans</span>.
+              <a class="pt-link" href="https://green-got.com/" target="_blank" rel="noopener">Voir l'offre ↗</a>
+              <span class="pt-note">Offres Premium en vigueur 2025, susceptibles d'évoluer. À activer dans l'app Green-Got, rubrique « Avantages ».</span>
+            </p>
+          </div>
         </div>
       </details>
 
@@ -841,6 +909,32 @@ footer .brand-line { font-weight: 800; color: var(--text); margin-top: 12px; }
       <button class="btn btn-ghost" id="btn-copy">🔗 Copier le lien</button>
     </div>
     <p class="copy-toast" id="copy-toast" aria-live="polite"></p>
+  </div>
+
+  <!-- ============== CERCLE VERTUEUX (lien Premium → Fondation, rappelé une seule fois) ============== -->
+  <div class="section" id="sec-premium">
+    <div class="premium-bridge">
+      <span class="kicker">Le cercle vertueux</span>
+      <h2>Consommer mieux, financer la recherche</h2>
+      <p class="bridge">
+        Les coups de pouce glissés dans vos recommandations font partie de l'offre Premium Green-Got. Et il y a un effet
+        double : payer avec la carte Green-Got finance la Fondation — <strong>5 % du chiffre d'affaires + l'arrondi solidaire</strong>.
+        Autrement dit, vos dépenses du quotidien soutiennent la recherche et l'action contre les pesticides, le plastique et les PFAS.
+      </p>
+
+      <div class="partner-tip">
+        <span class="pt-label"><span aria-hidden="true">⛰️</span> Coup de pouce Premium</span>
+        <p class="pt-body">
+          Envie de vraiment changer d'air ? <strong>GreenGo</strong> (séjours écoresponsables en France) vous reverse
+          <span class="pt-adv">5 % de cashback</span> avec la carte Premium — prendre soin de soi et de la planète, à la fois.
+          <span class="pt-note">Offre Premium 2025, susceptible d'évoluer. Codes et cashback dans l'app, rubrique « Avantages ».</span>
+        </p>
+      </div>
+
+      <div class="cta-duo">
+        <a class="btn btn-ghost" href="https://green-got.com/" target="_blank" rel="noopener">Voir l'offre Premium Green-Got</a>
+      </div>
+    </div>
   </div>
 
   <!-- ============== COMMENT ON AGIT, ENSEMBLE (AXE 5) ============== -->
@@ -964,6 +1058,13 @@ var SIGNALS = {
       fact: "Votre chambre n'est quasiment jamais aérée.",
       why: "Vous passez environ un tiers de votre temps dans votre chambre, sans la renouveler.",
       action: "Ouvrir grand 10 minutes chaque matin évacue l'air vicié de la nuit — beaucoup de gens disent mieux dormir ensuite."
+    },
+    partner: {
+      icon: '🧘',
+      html: "Pour un endormissement plus serein, le programme « Sommeil » de <strong>Petit Bambou</strong> (méditation, respiration) est <span class=\"pt-adv\">offert 1 mois</span> via l'app Green-Got.",
+      linkText: "En profiter ↗",
+      href: 'https://green-got.com/',
+      note: "Offre Premium 2025, susceptible d'évoluer. Code à activer dans la rubrique « carte cadeaux »."
     }
   },
   radon: {
@@ -1499,6 +1600,20 @@ function citeHtml(src) {
   return '<div class="cite-row"><span class="cite-lead">Sources :</span>' + chips + '</div>';
 }
 
+/* Génère l'encart partenaire discret ("Coup de pouce Premium") d'une carte, si défini.
+   Le partenaire arrive APRÈS le conseil : il facilite le geste, il ne le remplace pas. */
+function partnerHtml(p) {
+  if (!p) return '';
+  var link = p.href
+    ? ' <a class="pt-link" href="' + p.href + '" target="_blank" rel="noopener">' + (p.linkText || 'En profiter ↗') + '</a>'
+    : '';
+  var note = p.note ? '<span class="pt-note">' + p.note + '</span>' : '';
+  return '<div class="partner-tip">' +
+    '<span class="pt-label"><span aria-hidden="true">' + (p.icon || '🌿') + '</span> ' + (p.label || 'Coup de pouce Premium') + '</span>' +
+    '<p class="pt-body">' + p.html + link + note + '</p>' +
+    '</div>';
+}
+
 function buildReport() {
   var result = computeScore();
   renderGauge(result.score);
@@ -1558,7 +1673,8 @@ function buildReport() {
         '<div class="fact">' + r.fact + '</div>' +
         '<div class="row"><span class="ic">💡</span><span><span class="lbl lbl-why">Pourquoi ça compte : </span>' + r.why + '</span></div>' +
         '<div class="row"><span class="ic">✅</span><span><span class="lbl">Ce que vous pouvez faire (gratuit ou accessible) : </span>' + r.action + '</span></div>' +
-        citeHtml(sig.src);
+        citeHtml(sig.src) +
+        partnerHtml(sig.partner);
       prioEl.appendChild(card);
     });
   }
