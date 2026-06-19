@@ -496,23 +496,20 @@ details.acc > summary:focus-visible { outline: 3px solid var(--lime); outline-of
 .share-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
 .copy-toast { margin-top: 14px; font-weight: 800; color: var(--lime); height: 1.2em; }
 
-/* Bloc de clôture unique — cercle vertueux vers la Fondation / Green-Got */
+/* Bloc d'ouverture — note discrète, secondaire. PAS un CTA agressif :
+   surface sobre, un seul lien calme, poids visuel volontairement réduit
+   pour ne pas concurrencer le contenu utile du rapport. */
 .closing {
-  background: linear-gradient(135deg, var(--forest), #0c1409);
+  background: var(--surface-solid);
   color: var(--text); border-radius: var(--radius-card);
-  padding: 32px 28px; border: 1px solid rgba(183,246,81,0.22);
+  padding: 26px 26px; border: 1px solid var(--line);
+  border-top: 3px solid rgba(183, 246, 81, 0.45);
 }
-.closing .kicker { color: var(--lime); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; font-size: 0.8rem; }
-.closing h2 { color: var(--text); margin: 8px 0 12px; }
-.closing p { color: var(--muted); max-width: 600px; }
-.closing .b-corp { font-size: 0.92rem; }
-
-.kpi-row { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: center; margin: 22px 0; }
-.kpi { text-align: center; }
-.kpi .n { font-size: 1.6rem; font-weight: 900; color: var(--lime); line-height: 1; }
-.kpi .l { font-size: 0.82rem; color: var(--muted); }
-
-.cta-duo { display: flex; flex-wrap: wrap; gap: 12px; justify-content: flex-start; margin-top: 22px; }
+.closing .kicker { color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; font-size: 0.76rem; }
+.closing h2 { color: var(--text); font-size: clamp(1.2rem, 3.4vw, 1.5rem); margin: 8px 0 12px; }
+.closing p { color: var(--muted); max-width: 620px; font-size: 0.98rem; }
+.closing .b-corp { font-size: 0.88rem; }
+.closing .cta-open { margin-top: 20px; }
 
 .restart-wrap { text-align: center; margin-top: 40px; }
 
@@ -829,32 +826,31 @@ footer .brand-line { font-weight: 800; color: var(--text); margin-top: 12px; }
     </div>
   </div>
 
-  <!-- 5) Bloc de clôture unique — cercle vertueux vers la Fondation / Green-Got -->
+  <!-- 5) Note d'ouverture — pont honnête : air chez soi → environnement → rôle de l'argent.
+          Position secondaire (après le rapport et le partage), poids visuel réduit,
+          un seul lien calme. Présenté comme une ouverture, pas comme une publicité. -->
   <div class="section" id="sec-foundation">
     <div class="closing">
-      <span class="kicker">Le cercle vertueux</span>
-      <h2>Consommer mieux, financer la recherche</h2>
+      <span class="kicker">Pour aller plus loin</span>
+      <h2>Un air sain chez soi, un environnement sain autour</h2>
       <p>
-        Les coups de pouce glissés dans vos recommandations font partie de l'offre Premium Green-Got. Et il y a un
-        effet double : payer avec la carte Green-Got finance la Fondation — <strong>5 % du chiffre d'affaires + l'arrondi
-        solidaire</strong>. Vos dépenses du quotidien soutiennent ainsi la recherche et l'action contre les pesticides,
-        le plastique et les PFAS.
+        Améliorer l'air de son logement, c'est agir sur son environnement le plus proche. À plus grande
+        échelle, ce qui le dégrade — pollution, plastique, PFAS — dépend aussi de ce que l'on finance
+        sans toujours le savoir : <strong>l'argent déposé en banque est investi quelque part</strong>, parfois
+        dans les énergies fossiles.
+      </p>
+      <p>
+        C'est le fil que suit <strong>Green-Got</strong>, la néobanque qui a créé cette Fondation : exclure
+        les fossiles et reverser une partie de son activité (<strong>5 % du chiffre d'affaires + l'arrondi
+        solidaire</strong>) à des projets environnementaux. Si le sujet vous parle, c'est une piste — rien de plus.
       </p>
       <p class="b-corp">
-        La <strong>Fondation Green-Got</strong> est abritée par la <strong>Fondation de France</strong> ; les projets
-        sont sélectionnés selon des critères stricts (suivi chiffré, transparence, alignement sur les ODD de l'ONU).
-        <strong>Green-Got</strong> est une néobanque qui exclut les énergies fossiles, <strong>certifiée B Corp (2024)</strong>.
+        La <strong>Fondation Green-Got</strong> est abritée par la <strong>Fondation de France</strong> et
+        <strong>Green-Got</strong> est certifiée <strong>B Corp (2024)</strong>.
       </p>
 
-      <div class="kpi-row">
-        <div class="kpi"><div class="n">~2 M€</div><div class="l">déjà collectés depuis 2022</div></div>
-        <div class="kpi"><div class="n">15 M€</div><div class="l">d'ici 2030 (ambition)</div></div>
-        <div class="kpi"><div class="n">5 %</div><div class="l">du CA reversé</div></div>
-      </div>
-
-      <div class="cta-duo">
-        <a class="btn btn-primary" href="https://fondation.green-got.com/" target="_blank" rel="noopener">Découvrir la Fondation Green-Got</a>
-        <a class="btn btn-secondary" href="https://green-got.com/" target="_blank" rel="noopener">Voir l'offre Green-Got</a>
+      <div class="cta-open">
+        <a class="btn btn-secondary" href="https://green-got.com/" target="_blank" rel="noopener">Découvrir Green-Got</a>
       </div>
     </div>
   </div>
