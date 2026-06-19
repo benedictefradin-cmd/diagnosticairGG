@@ -4,12 +4,12 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Mon air intérieur · Reprenez le pouvoir sur ce que vous respirez chez vous</title>
-<meta name="description" content="Test interactif et 100 % anonyme pour évaluer la qualité de l'air de votre logement en 2 minutes, et passer à l'action. Un outil proposé par la Fondation Green-Got." />
+<meta name="description" content="Test interactif et 100 % anonyme pour évaluer la qualité de l'air de votre logement en 3 minutes, et passer à l'action. Un outil proposé par la Fondation Green-Got." />
 <meta name="theme-color" content="#0d0d0d" />
 
 <!-- Partage social (Open Graph) — pas de tracker, simples métadonnées -->
 <meta property="og:title" content="Mon air intérieur · Testez ce que vous respirez chez vous" />
-<meta property="og:description" content="J'ai testé mon air intérieur en 2 min, et toi ? Test anonyme, gratuit, sans collecte de données." />
+<meta property="og:description" content="J'ai testé mon air intérieur en 3 min, et toi ? Test anonyme, gratuit, sans collecte de données." />
 <meta property="og:type" content="website" />
 
 <!-- Police via Google Fonts : Manrope (sans-serif géométrique moderne, gras assumé) -->
@@ -641,14 +641,14 @@ footer .brand-line { font-weight: 800; color: var(--text); margin-top: 12px; }
       </svg>
       <div class="scene-overlay"></div>
       <div class="scene-text">
-        <span class="badge">🌿 Fondation Green-Got · Santé environnementale</span>
+        <span class="badge">Fondation Green-Got · Santé environnementale</span>
       </div>
     </div>
 
     <h1 id="home-title">Reprenez le pouvoir sur <span class="accent">l'air que vous respirez</span> chez vous</h1>
     <p class="lead">
       On passe près de <strong>90 % de notre temps à l'intérieur</strong> — où l'air est souvent
-      plus pollué qu'à l'extérieur. En 2 minutes, faites le point sur ce que vous respirez,
+      plus pollué qu'à l'extérieur. En 3 minutes, faites le point sur ce que vous respirez,
       et repartez avec des gestes concrets à faire dès aujourd'hui.
     </p>
 
@@ -661,7 +661,7 @@ footer .brand-line { font-weight: 800; color: var(--text); margin-top: 12px; }
       </p>
     </div>
 
-    <button class="btn btn-primary" id="btn-start">Faire le test (2 min) →</button>
+    <button class="btn btn-primary" id="btn-start">Faire le test (3 min) →</button>
 
     <div class="trust-row">
       <span>100 % anonyme</span>
@@ -862,7 +862,7 @@ footer .brand-line { font-weight: 800; color: var(--text); margin-top: 12px; }
   <div class="section">
     <div class="share-box">
       <h2>Partagez le test</h2>
-      <p class="share-sub">Vos proches respirent eux aussi chez eux. Offrez-leur 2 minutes de prise de conscience.</p>
+      <p class="share-sub">Vos proches respirent eux aussi chez eux. Offrez-leur 3 minutes de prise de conscience.</p>
       <div class="share-grid">
         <button class="btn btn-primary" id="btn-share">
           <svg class="ic-svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M12 3v13"/><path d="M8 7l4-4 4 4"/></svg>
@@ -1351,12 +1351,17 @@ var TIERS = [
 /* ==================================================================
    RADON — orientation par département (classification IRSN)
    ------------------------------------------------------------------
-   /!\ SOURCE À VALIDER : ce classement attribue à chaque département
-   sa catégorie de potentiel radon DOMINANTE (1 faible / 2 intermédiaire
-   / 3 significatif), d'après la cartographie IRSN du potentiel radon.
-   Le potentiel réel varie d'une commune à l'autre : c'est une orientation,
+   Ce classement attribue à chaque département une catégorie de potentiel
+   radon (1 faible / 2 intermédiaire / 3 significatif) reflétant la présence
+   de secteurs concernés, d'après la géologie et la cartographie IRSN/ASNR
+   (massifs granitiques : Bretagne/massif armoricain, Massif central, Vosges,
+   Corse, Pyrénées). Recoupé avec la liste des départements à forte part
+   d'habitants exposés (Corse-du-Sud, Creuse, Finistère, Haute-Vienne, Morbihan,
+   Cantal, Côtes-d'Armor, Corrèze, Lozère, Aveyron…).
+   /!\ Le potentiel réel varie d'une COMMUNE à l'autre : c'est une orientation,
    pas un diagnostic. La carte officielle commune par commune fait foi
-   (Géorisques / IRSN). À revérifier avant mise en ligne définitive.
+   (Géorisques / IRSN). Source du zonage de référence : zonage radon ASNR/IRSN
+   (arrêté du 27 juin 2018), data.gouv.fr « Zonage en potentiel radon ».
    ================================================================== */
 var DEPARTMENTS = [
   ['01','Ain'],['02','Aisne'],['03','Allier'],['04','Alpes-de-Haute-Provence'],['05','Hautes-Alpes'],
@@ -1399,7 +1404,7 @@ var RADON_LEVELS = {
   2: { label: "Potentiel intermédiaire", cls: "lvl-2",
        msg: "Votre département présente un potentiel radon <strong>intermédiaire</strong> : selon les terrains, des accumulations sont possibles. Un kit de mesure, simple et peu coûteux, lève le doute ; bien ventiler aide à réduire la concentration." },
   3: { label: "Potentiel significatif", cls: "lvl-3",
-       msg: "Votre département fait partie des zones à potentiel radon <strong>significatif</strong>. Une mesure est recommandée — c'est le seul moyen de connaître le niveau réel de votre logement. Aérer et ventiler contribue à le faire baisser." }
+       msg: "Votre département comporte des <strong>secteurs à potentiel radon significatif</strong> (massifs granitiques ou volcaniques). Une mesure est recommandée — c'est le seul moyen de connaître le niveau réel de votre logement. Aérer et ventiler contribue à le faire baisser." }
 };
 
 /* ==================================================================
@@ -1817,7 +1822,7 @@ function renderGauge(score) {
    PARTAGE
    ================================================================== */
 var SHARE_URL = window.location.href.split('#')[0];
-var SHARE_MSG = "J'ai testé mon air intérieur en 2 min, et toi ?";
+var SHARE_MSG = "J'ai testé mon air intérieur en 3 min, et toi ?";
 
 document.getElementById('btn-share').addEventListener('click', function () {
   if (navigator.share) {
@@ -1854,7 +1859,7 @@ var fullMsg = encodeURIComponent(SHARE_MSG + " " + SHARE_URL);
 document.getElementById('share-wa').href = "https://wa.me/?text=" + fullMsg;
 document.getElementById('share-sms').href = "sms:?&body=" + fullMsg;
 document.getElementById('share-mail').href =
-  "mailto:?subject=" + encodeURIComponent("Teste ton air intérieur en 2 min") +
+  "mailto:?subject=" + encodeURIComponent("Teste ton air intérieur en 3 min") +
   "&body=" + fullMsg;
 
 /* ==================================================================
