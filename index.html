@@ -350,6 +350,14 @@ ul.strengths li::before {
   margin-bottom: 16px; border: 1px solid var(--line);
 }
 .card.reco { border-left: 3px solid var(--lime); }
+/* Carte mise en avant : le geste le plus impactant POUR CE profil */
+.card.reco.is-primary { border-left-width: 4px; background: rgba(183, 246, 81, 0.06); }
+.reco-rank {
+  display: inline-block; font-size: 0.7rem; font-weight: 800;
+  text-transform: uppercase; letter-spacing: .07em;
+  color: #0a0f06; background: var(--lime);
+  padding: 4px 11px; border-radius: 999px; margin-bottom: 12px;
+}
 .reco-title { font-size: 1.12rem; font-weight: 800; margin: 0 0 8px; }
 .reco-why { color: var(--muted); margin: 0 0 10px; }
 .reco-do { margin: 0; }
@@ -1544,30 +1552,34 @@ function buildReport() {
   var prioIntro = document.getElementById('prio-intro');
 
   if (sorted.length === 0) {
-    prioTitle.textContent = "Le geste à garder";
-    prioIntro.textContent = "Rien d'urgent à signaler — voici le réflexe qui fait toute la différence.";
+    // Aucun signal détecté : tout est déjà sain. Le réflexe à entretenir est l'aération —
+    // c'est ici un message légitime (rien à corriger), pas un texte par défaut masquant un manque.
+    prioTitle.textContent = "Le réflexe à garder";
+    prioIntro.textContent = "Rien d'urgent à signaler — voici le geste qui fait toute la différence sur la durée.";
     prioEl.appendChild(makeRecoCard({
       report: {
         fact: "Aérez 2 × 10 min par jour, même l'hiver.",
         why: "Ouvrir grand 10 minutes matin et soir renouvelle l'air sans refroidir les murs.",
         action: "C'est gratuit, rapide, et c'est le geste le plus efficace de tous. Continuez ainsi."
       }
-    }));
+    }, "Le réflexe à garder"));
   } else {
     var shown = sorted.slice(0, 4);
     prioTitle.textContent = "Vos " + shown.length + (shown.length > 1 ? " priorités" : " priorité");
-    shown.forEach(function (key) {
-      prioEl.appendChild(makeRecoCard(SIGNALS[key]));
+    // La première carte (signal le plus pénalisant pour CE profil) est le réflexe n°1.
+    shown.forEach(function (key, i) {
+      prioEl.appendChild(makeRecoCard(SIGNALS[key], i === 0 ? "Le réflexe n°1 pour vous" : null));
     });
 
-    // Ancre universelle : l'aération, si elle n'est pas déjà couverte
+    // Ancre universelle : l'aération, si elle n'est pas déjà couverte par les priorités ci-dessus.
+    // Affichée en complément (jamais en réflexe n°1 ici, puisqu'un signal plus fort existe).
     var covered = shown.indexOf('ventilation') !== -1 || shown.indexOf('aeration_hiver') !== -1;
     if (!covered) {
       prioEl.appendChild(makeRecoCard({
         report: {
-          fact: "Le geste n°1 : aérez 2 × 10 min par jour, même l'hiver.",
+          fact: "En complément : aérez 2 × 10 min par jour, même l'hiver.",
           why: "Ouvrir grand 10 minutes matin et soir renouvelle l'air sans refroidir les murs.",
-          action: "C'est gratuit, rapide, et c'est le geste le plus efficace de tous."
+          action: "C'est gratuit, rapide, et c'est le geste de fond le plus efficace de tous."
         }
       }));
     }
@@ -1576,12 +1588,15 @@ function buildReport() {
   showScreen('report');
 }
 
-/* Construit une carte de recommandation (titre d'action + 2 phrases + science + partenaire) */
-function makeRecoCard(sig) {
+/* Construit une carte de recommandation (titre d'action + 2 phrases + science + partenaire).
+   `rankLabel` (optionnel) affiche un badge "Le réflexe n°1…" sur la carte mise en avant —
+   c'est le geste le plus impactant POUR CE profil, choisi dynamiquement, jamais un texte par défaut. */
+function makeRecoCard(sig, rankLabel) {
   var r = sig.report;
   var card = document.createElement('div');
-  card.className = 'card reco';
+  card.className = 'card reco' + (rankLabel ? ' is-primary' : '');
   card.innerHTML =
+    (rankLabel ? '<span class="reco-rank">' + esc(rankLabel) + '</span>' : '') +
     '<h3 class="reco-title">' + esc(r.fact) + '</h3>' +
     '<p class="reco-why">' + esc(r.why) + '</p>' +
     '<p class="reco-do"><span class="lbl">À faire :</span> ' + esc(r.action) + '</p>' +
