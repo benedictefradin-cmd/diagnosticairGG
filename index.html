@@ -237,6 +237,19 @@ strong { color: var(--text); }
 /* ============================================================
    ÉCRAN 2 — QUESTIONNAIRE
    ============================================================ */
+/* Indicateur de section (thème) au-dessus de la barre de progression */
+.q-section {
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 10px;
+  margin: 0 0 12px; font-size: 0.92rem;
+}
+.q-section-step {
+  font-weight: 800; font-size: 0.72rem; text-transform: uppercase;
+  letter-spacing: .06em; color: var(--lime);
+  background: var(--lime-soft); border: 1px solid rgba(183, 246, 81, 0.25);
+  border-radius: 999px; padding: 3px 10px;
+}
+.q-section-name { font-weight: 800; color: var(--text); }
+
 .progress-head {
   display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 8px; font-size: 0.9rem; font-weight: 700; color: var(--muted);
@@ -630,8 +643,13 @@ footer .brand-line { font-weight: 800; color: var(--text); margin-top: 12px; }
 <!-- ÉCRAN 2 — QUESTIONNAIRE                                 -->
 <!-- ====================================================== -->
 <section id="screen-quiz" class="screen" aria-labelledby="q-title">
+  <!-- Thème de la section en cours : donne du sens à la longueur du parcours -->
+  <p class="q-section" id="q-section" aria-live="polite">
+    <span class="q-section-step" id="q-section-step"></span>
+    <span class="q-section-name" id="q-section-name"></span>
+  </p>
   <div class="progress-head">
-    <span id="progress-label">Question 1 / 18</span>
+    <span id="progress-label">Question 1 sur 18</span>
     <span id="progress-pct">0 %</span>
   </div>
   <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progression du test">
@@ -1241,6 +1259,28 @@ var QUESTIONS = [
   }
 ];
 
+/* ------------------------------------------------------------------
+   SECTIONS — regroupement thématique des questions (affichage seul).
+   Donne du sens à la longueur du parcours ; n'affecte pas le score.
+   ------------------------------------------------------------------ */
+var SECTIONS = [
+  { name: "Votre logement",         ids: ['logement', 'date'] },
+  { name: "Aération & ventilation", ids: ['renouvellement', 'aeration', 'cuisine'] },
+  { name: "Sources de pollution",   ids: ['bougies', 'ustensiles', 'produits', 'mobilier', 'tabac'] },
+  { name: "Humidité & entretien",   ids: ['humidite', 'poussiere', 'linge'] },
+  { name: "Le radon",               ids: ['radon'] },
+  { name: "Votre foyer",            ids: ['occupants', 'animaux'] },
+  { name: "La nuit",                ids: ['chambre', 'nuit'] }
+];
+
+/* Retourne { index, name } de la section contenant la question d'id donné */
+function sectionForId(id) {
+  for (var i = 0; i < SECTIONS.length; i++) {
+    if (SECTIONS[i].ids.indexOf(id) !== -1) return { index: i, name: SECTIONS[i].name };
+  }
+  return { index: 0, name: '' };
+}
+
 /* Encouragements affichés à certaines étapes (gamification douce, sans emoji) */
 var ENCOURAGEMENTS = {
   4:  "Beau début ! Continuez.",
@@ -1291,6 +1331,8 @@ var elQTitle    = document.getElementById('q-title');
 var elQHint     = document.getElementById('q-hint');
 var elProgLabel = document.getElementById('progress-label');
 var elProgPct   = document.getElementById('progress-pct');
+var elSecStep   = document.getElementById('q-section-step');
+var elSecName   = document.getElementById('q-section-name');
 var elProgFill  = document.getElementById('progress-fill');
 var elProgBar   = document.querySelector('.progress-track');
 var elEncourage = document.getElementById('q-encourage');
@@ -1301,9 +1343,21 @@ function renderQuestion() {
   var q = QUESTIONS[state.current];
   var total = QUESTIONS.length;
 
+  // TODO analytics : journaliser l'affichage de la question (q.id, state.current)
+  //   pour mesurer le taux de complétion / d'abandon par question.
+  //   Strictement anonyme : aucun identifiant, aucune réponse nominative.
+
+  // Section thématique en cours (donne du sens à la longueur)
+  var sec = sectionForId(q.id);
+  elSecStep.textContent = "Section " + (sec.index + 1) + " / " + SECTIONS.length;
+  elSecName.textContent = sec.name;
+
   // Barre de progression
   var pct = Math.round(((state.current) / total) * 100);
-  elProgLabel.textContent = "Question " + (state.current + 1) + " / " + total;
+  // Libellé rassurant : on rappelle ce qu'il reste à faire
+  var remaining = total - (state.current + 1);
+  elProgLabel.textContent = "Question " + (state.current + 1) + " sur " + total +
+    (remaining > 0 ? " · plus que " + remaining : " · dernière !");
   elProgPct.textContent = pct + " %";
   elProgFill.style.width = pct + "%";
   elProgBar.setAttribute('aria-valuenow', String(pct));
@@ -1372,6 +1426,8 @@ function goNext() {
     state.current++;
     renderQuestion();
   } else {
+    // TODO analytics : journaliser l'événement "questionnaire terminé"
+    //   (compteur agrégé du taux de complétion global, sans aucune donnée nominative).
     runCalc();
   }
 }
