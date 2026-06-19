@@ -272,6 +272,8 @@ strong { color: var(--text); }
 }
 
 .q-title { margin-bottom: 22px; }
+/* Focus amené par programme sur l'intitulé : pas d'encadré visuel parasite */
+.q-title:focus { outline: none; }
 .q-hint { color: var(--muted); font-size: 0.95rem; margin-top: -14px; margin-bottom: 22px; }
 
 .options { display: flex; flex-direction: column; gap: 12px; }
@@ -297,7 +299,8 @@ strong { color: var(--text); }
 .q-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 26px; gap: 12px; }
 .q-nav .btn-link {
   background: none; border: none; color: var(--muted); font-family: inherit;
-  font-size: 1rem; font-weight: 700; cursor: pointer; padding: 10px 4px;
+  font-size: 1rem; font-weight: 700; cursor: pointer;
+  padding: 12px 8px; min-height: 44px;   /* cible tactile ≥ 44 px */
 }
 .q-nav .btn-link:hover { color: var(--text); }
 .q-nav .btn-link:focus-visible { outline: 3px solid var(--lime); outline-offset: 2px; border-radius: 6px; }
@@ -431,7 +434,7 @@ ul.strengths li::before {
 }
 .partner-tip .pt-label {
   display: block;
-  font-size: 0.68rem; font-weight: 800; text-transform: uppercase;
+  font-size: 0.74rem; font-weight: 800; text-transform: uppercase;
   letter-spacing: .07em; color: var(--lime); margin-bottom: 6px;
 }
 .partner-tip .pt-body { margin: 0; color: var(--muted); line-height: 1.5; }
@@ -440,7 +443,7 @@ ul.strengths li::before {
 .partner-tip a.pt-link { font-weight: 700; white-space: nowrap; }
 .partner-tip .pt-note {
   display: block; margin-top: 7px;
-  font-size: 0.74rem; line-height: 1.4; color: var(--muted);
+  font-size: 0.79rem; line-height: 1.45; color: var(--muted);
 }
 
 /* Encart personne sensible */
@@ -686,10 +689,11 @@ footer .brand-line { font-weight: 800; color: var(--text); margin-top: 12px; }
   </div>
   <p class="q-encourage" id="q-encourage" aria-live="polite"></p>
 
-  <div aria-live="polite">
-    <h2 class="q-title" id="q-title">…</h2>
+  <div>
+    <!-- tabindex=-1 : le focus est amené ici à chaque question (continuité clavier + lecteur d'écran) -->
+    <h2 class="q-title" id="q-title" tabindex="-1">…</h2>
     <p class="q-hint" id="q-hint" hidden></p>
-    <div class="options" id="options" role="group" aria-labelledby="q-title"></div>
+    <div class="options" id="options" role="radiogroup" aria-labelledby="q-title"></div>
   </div>
 
   <div class="q-nav">
@@ -702,9 +706,9 @@ footer .brand-line { font-weight: 800; color: var(--text); margin-top: 12px; }
 <!-- ====================================================== -->
 <!-- ÉCRAN 3 — CALCUL                                        -->
 <!-- ====================================================== -->
-<section id="screen-calc" class="screen" aria-label="Analyse en cours">
+<section id="screen-calc" class="screen" role="status" aria-live="polite">
   <div class="spinner" aria-hidden="true"></div>
-  <p class="calc-text">Analyse de vos réponses…</p>
+  <p class="calc-text" id="calc-text">Analyse de vos réponses…</p>
   <p class="calc-sub">On prépare votre rapport personnalisé.</p>
 </section>
 
@@ -1476,6 +1480,9 @@ function renderQuestion() {
   // Bouton suivant : seulement pour les questions à choix multiple
   btnNext.hidden = !q.multi;
 
+  // Conteneur d'options : radiogroup (choix unique) ou group (cases à cocher)
+  elOptions.setAttribute('role', q.multi ? 'group' : 'radiogroup');
+
   // Options
   elOptions.innerHTML = '';
   var selected = state.answers[q.id];
@@ -1498,6 +1505,10 @@ function renderQuestion() {
     btn.addEventListener('click', function () { selectOption(q, opt, btn); });
     elOptions.appendChild(btn);
   });
+
+  // Amène le focus sur l'intitulé : le lecteur d'écran annonce la nouvelle question
+  // et l'utilisateur clavier reprend au bon endroit (sinon le focus retombe sur <body>).
+  elQTitle.focus();
 }
 
 function selectOption(q, opt, btn) {
@@ -1609,6 +1620,8 @@ function getTier(score) {
    ================================================================== */
 function runCalc() {
   showScreen('calc');
+  // Force une mise à jour du texte pour que la région live (role="status") soit annoncée
+  document.getElementById('calc-text').textContent = 'Analyse de vos réponses…';
   elProgFill.style.width = '100%';
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var delay = reduce ? 300 : 1600;
